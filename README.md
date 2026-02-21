@@ -12,3 +12,7 @@
 - Usar nome de variáveis em português.
 - Identação no código.
 - Funções e variáveis com nomes claros e se possível comente.
+
+## Divisão de Branchs
+- `login` Implementação da página de Login
+- `cadastro` Implementaçã da página de Cadastro
