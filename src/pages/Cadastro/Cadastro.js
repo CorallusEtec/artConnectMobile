@@ -23,10 +23,12 @@ export default function Cadastro() {
   const [ano, setAno] = useState();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  
+  
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
       {/* IMAGEM DE FUNDO */}
-      <View style={{ flex: 0.2 }}>
+      <View style={{ flex: 0.15 }}>
         <Image
           className="rounded-b-2xl"
           style={{ maxHeight: "100%", maxWidth: "100%" }}
@@ -55,8 +57,8 @@ export default function Cadastro() {
           />
         </View>
 
-        <View style={{flex:0.2}} className="m-3">
-          <View style={{flex:0.8}} className="flex-row gap-2 ">
+        <View style={{flex:0.14}} className="m-3">
+          <View style={{flex:1}} className="flex-row gap-2 ">
             <Image
               style={{ height: 40, width: 40 }}
               tintColor="#009966"
@@ -99,7 +101,7 @@ export default function Cadastro() {
           </View>
         </View>
         
-        <View style={{flex:0.1}} className="flex-row items-center border-emerald-700 border-b-2 gap-2 pb-2 ml-3 mr-3">
+        <View style={{flex:0.1}} className="mb-5 flex-row items-center border-emerald-700 border-b-2 gap-2 pb-2 ml-3 mr-3">
           <Image source={require("bootstrap-icons/icons/envelope-fill.svg")}
           tintColor="#009966"
           style={{height:40, width:40}}
@@ -114,7 +116,7 @@ export default function Cadastro() {
             placeholder="E-Mail"
           />
         </View>
-        <View style={{flex:0.1}} className="flex-row items-center border-emerald-700 border-b-2 gap-2 ml-3 mr-3">
+        <View style={{flex:0.1}} className=" mb-5 flex-row items-center border-emerald-700 border-b-2 gap-2 ml-3 mr-3">
           <Image source={require("bootstrap-icons/icons/lock-fill.svg")}
           tintColor="#009966"
           style={{height:40, width:40}}
@@ -133,6 +135,11 @@ export default function Cadastro() {
             style={{height:30, width:30}}
             tintColor="#009966"
             source={mostrarSenha?require('bootstrap-icons/icons/eye-fill.svg'):require('bootstrap-icons/icons/eye-slash-fill.svg')} />
+          </Pressable>
+        </View>
+        <View className="flex-row justify-center">
+          <Pressable className="  bg-emerald-500  p-3  rounded-full">
+            <Text className="text-lg text-white text-center font-semibold">Criar conta</Text>
           </Pressable>
         </View>
       </View>
