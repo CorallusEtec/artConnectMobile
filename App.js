@@ -7,11 +7,11 @@ import "./global.css";
 export default function App() {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
-        <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
