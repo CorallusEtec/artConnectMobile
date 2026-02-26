@@ -12,7 +12,16 @@
 - Usar nome de variáveis em português.
 - Identação no código.
 - Funções e variáveis com nomes claros e se possível comente.
+## Padrões de código
+- Comentar quando possível para clareza do código
+- Antes de criar uma branch, use o `git pull origin main` para atualizar a sua `branch` main com a do repositório remoto
+### Usar a seguinte notação para a cria a branch:
+- Crie a sua branch a partir da `main`: estando na `main`, use o comando `git checkout -b <nome-da-branch>`
+- **Não** comittar direto na `main`, crie uma branch específica para a sua tarefa
+- Após terminar a tarefa, faça o `git add .`, depois `git commit -m "<nome-commit>"`e depois `git push origin <sua-branch>`.
+  uando finalizar as terafas totalmente, no Github abra o pull request
 
 ## Divisão de Branchs
 - `login` Implementação da página de Login
 - `cadastro` Implementaçã da página de Cadastro
+- `esqueceu-senha` Implementaçã da página de Esqueceu senha
