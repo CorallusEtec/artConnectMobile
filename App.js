@@ -3,12 +3,14 @@ import Login from "./src/pages/Login/Login";
 import Cadastro from "./src/pages/Cadastro/Cadastro";
 import { NavigationContainer } from "@react-navigation/native";
 import "./global.css";
+import Splash from "./src/pages/Splash/Splash";
 
 export default function App() {
   const Stack = createStackNavigator();
   return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Splash" component={Splash} options={{headerShown: false}} />
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
         </Stack.Navigator>
