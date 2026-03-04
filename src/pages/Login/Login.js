@@ -1,4 +1,3 @@
-
 import { View, Text, Pressable, Image } from "react-native";
 import { TextInput } from "react-native-web";
 import { useNavigation } from "@react-navigation/native";
