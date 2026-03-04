@@ -1,12 +1,15 @@
 import { View, Text, Pressable, Image } from "react-native";
 import { TextInput } from "react-native-web";
 import { useNavigation } from "@react-navigation/native";
+import Feather from '@expo/vector-icons/Feather';
+import { Checkbox } from 'expo-checkbox';
+import { useState } from "react";
 
 {/*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/}
 
 export default function Login() {
     const navigation = useNavigation();
-
+    const [isChecked, setChecked] = useState(false);
 
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "#04CBAC" }}>
@@ -33,10 +36,7 @@ export default function Login() {
 
                 {/*E-MAIL*/}
                 <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg ml-3 mr-3 mt-6 gap-2">
-                    <Image source={require("bootstrap-icons/icons/envelope.svg")}
-                    tintColor="#5a5a5a"
-                    style={{height:25, width:25, margin:7}}
-                    />
+                    <Feather style={{margin:7}} name="mail" size={25} color="#5a5a5a" />
                     <TextInput
                         className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
                         placeholder="E-mail"
@@ -46,24 +46,23 @@ export default function Login() {
 
                 {/*SENHA*/}
                 <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg ml-3 mr-3 mt-6 gap-2">
-                    <Image source={require("bootstrap-icons/icons/lock.svg")}
-                    tintColor="#5a5a5a"
-                    style={{height:25, width:25, margin:7}}
-                    />
+                    <Feather style={{margin:7}} name="lock" size={25} color="#5a5a5a" />
                     <TextInput
                         className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
                         placeholder="Senha"
                     />
-                    <Image source={require("bootstrap-icons/icons/eye.svg")}
-                    tintColor="#5a5a5a"
-                    style={{height:25, width:25, margin:7}}
-                    />
+                    <Feather style={{margin:7}} name="eye" size={25} color="#5a5a5a" />
                 </View>
 
-
                 <View className="flex-row items-center mt-6">
-                    <Text className="font-semibold w-30 mx-10">Lembrar Login</Text>
-                    <Pressable><Text className="text-gray-500 w-30 mx-10">Esqueci a Senha</Text></Pressable>
+                    <Checkbox
+                        className="ml-14"
+                        value={isChecked}
+                        onValueChange={setChecked}
+                        color={isChecked ? '#4630EB' : undefined}
+                    />
+                    <Text className="font-semibold w-30 mx-3">Lembrar Login</Text>
+                    <Pressable><Text className="text-gray-500 w-30 mx-14">Esqueci a Senha</Text></Pressable>
                 </View>
 
 
@@ -81,9 +80,9 @@ export default function Login() {
                 </View>
 
                 {/*CADASTRO*/}
-                <View className="w-3/4 flex-row items-center mt-6">
-                    <Text className="font-semibold">Não tem Cadastro? </Text>
-                    <Pressable onPress={()=>navigation.navigate("Cadastro")} ><Text className="text-gray-500">Cadastre-se</Text></Pressable>
+                <View className="ml-20 flex-row items-center mt-6">
+                    <Text className="m-4 font-semibold">Não tem Cadastro? </Text>
+                    <Pressable className="m-2" onPress={()=>navigation.navigate("Cadastro")} ><Text className="text-gray-500">Cadastre-se</Text></Pressable>
                 </View>
             </View>
         </View>
