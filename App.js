@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import EditarPerfil from "./src/pages/EditarPerfil/EditarPerfil";
 import Login from "./src/pages/Login/Login";
 import Cadastro from "./src/pages/Cadastro/Cadastro";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,6 +10,7 @@ export default function App() {
   return (
       <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{headerShown: false}} />
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
         </Stack.Navigator>
