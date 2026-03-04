@@ -3,6 +3,7 @@
 ## Dados do projeto
 - Início de desenvolvimento: 19/02/2026
 - Linguagem e tecnologias: Javascript, TailwindCSS
+- Usar a biblioteca de icones do Expo https://icons.expo.fyi/Index
 ## Regras de Desenvolvimento
 - Se é a primeira vez baixando o repositório para a sua máquina, use os seguintes comando:
 1. <code>git clone https://github.com/SamuMeneDev/artConnectMobile.git</code>
