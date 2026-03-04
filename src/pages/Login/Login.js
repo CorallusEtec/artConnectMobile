@@ -55,7 +55,7 @@ export default function Login() {
 
             <View className="flex-row items-center mt-6">
                 <Text className="font-semibold w-30 mx-10">Lembrar Login</Text>
-                <Pressable onPress={()=>navigation.navigate("EsqueciSenha")}><Text className="text-emerald-700 font-semibold w-30 mx-10">Esqueci a Senha</Text></Pressable>
+                <Pressable><Text className="text-emerald-700 font-semibold w-30 mx-10">Esqueci a Senha</Text></Pressable>
             </View>
 
             {/*ENTRAR*/}
