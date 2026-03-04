@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./src/pages/Login/Login";
 import Cadastro from "./src/pages/Cadastro/Cadastro";
-import EsqueciSenha from "./src/pages/EsqueciSenha/EsqueciSenha";
 import { NavigationContainer } from "@react-navigation/native";
 import "./global.css";
 
