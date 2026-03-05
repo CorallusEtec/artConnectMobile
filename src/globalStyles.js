@@ -1,7 +1,7 @@
 const globalStyles = {
     paleta: {
         corIcones: "#585858",
-        verdePrimary: "5A6061",
+        verdePrimary: "#5A6061",
     },
     icone: {
         corIcones: "#585858",
