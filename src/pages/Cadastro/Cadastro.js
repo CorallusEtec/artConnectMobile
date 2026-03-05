@@ -47,7 +47,7 @@ export default function Cadastro() {
       {/*TITULO E BANNER*/}
       <View style={{ flex: 0.25 }} className="items-center justify-center">
         <Text className="font-normal text-5xl text-emerald-800">Cadastro</Text>
-        <Text className="text-emerald-900 w-[80%] text-center font-light text-xl">
+        <Text className="text-emerald-900 w-[85%] text-center font-light text-xl">
           Sua primeira vez no Art Connect? Vamos criar uma conta pra você
         </Text>
       </View>
@@ -55,7 +55,7 @@ export default function Cadastro() {
       <View style={{ flex: 0.6 }} className="gap-2">
         <View className="gap-2 mb-5">
           {/*Nome*/}
-          <InputIcon>
+          <InputIcon >
             <Feather
               name="user"
               size={globalStyles.icone.size}
@@ -65,7 +65,7 @@ export default function Cadastro() {
               value={nome}
               keyboardType="default"
               onChangeText={setNome}
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="Nome Completo"
             />
           </InputIcon>
@@ -80,14 +80,14 @@ export default function Cadastro() {
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="E-mail"
             />
           </InputIcon>
           {/*Senha*/}
-          <InputSenha value={senha} setValue={setSenha} />
+          <InputSenha value={senha} setValue={setSenha} placeholder={"Crie uma senha"} />
           {/*Confirmar Senha*/}
-          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} />
+          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} placeholder={"Confirme a senha"} />
           {/*CPF*/}
           <InputIcon>
             <Feather
@@ -98,8 +98,9 @@ export default function Cadastro() {
             <TextInput
               keyboardType="numeric"
               value={cpf}
+              maxLength={14}
               onChangeText={setCpf}
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="CPF"
             />
           </InputIcon>
@@ -139,8 +140,8 @@ export default function Cadastro() {
             <View className="border border-stone-300 rounded-lg bg-stone-200">
               <Picker
                 style={{
-                  width: 150,
-                  height: 50,
+                  width: 170,
+                  height: "auto",
                   color: "#7d7d7d",
                   textAlign: "center",
                   fontWeight: "semibold",
@@ -160,7 +161,7 @@ export default function Cadastro() {
         </View>
         {/*PROXIMO E LOGIN*/}
         <View className="items-center gap-3">
-          <Pressable className="flex flex-row">
+          <Pressable className="flex flex-row" onPress={()=>navigation.navigate("Login")}>
             <Text className="text-lg font-normal">Ja tem uma conta? </Text>
             <Text className="text-lg text-emerald-600">Faça Login</Text>
           </Pressable>

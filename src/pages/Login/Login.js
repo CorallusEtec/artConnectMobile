@@ -1,14 +1,18 @@
-import { View, Text, Pressable, Image } from "react-native";
-import { TextInput } from "react-native-web";
+import { View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
 import { Checkbox } from 'expo-checkbox';
 import { useState } from "react";
+import globalStyles from "../../globalStyles";
+import InputIcon from "../../components/InputIcon";
+import InputSenha from "../../components/InputSenha";
 
 {/*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/}
 
 export default function Login() {
     const navigation = useNavigation();
+    const [senha, setSenha] = useState();
+    const [email, setEmail] = useState();
     const [isChecked, setChecked] = useState(false);
 
     return (
@@ -21,68 +25,68 @@ export default function Login() {
 
 
             {/*TÍTULO*/}
-            <View style={{ flex: 0.9, flexDirection: "column", borderTopLeftRadius:30, borderTopRightRadius:30, backgroundColor: "#ffffff" }}>
-                <View className="items-center mb-2">
-                    <Text className="text-5xl text-gray-600 m-2.5">
+            <View className="rounded-t-xl bg-white" style={{ flex: 0.9 }}>
+                {/* TITULO */}
+                <View style={{flex:0.2}} className=" justify-center items-center">
+                    <Text className="text-4xl text-gray-600">
                         Login
                     </Text>
 
 
-                    <Text className="text-xl text-gray-500 mb-8">
+                    <Text className="text-xl text-gray-500">
                         Bem vindo! Entre com sua conta.
                     </Text>
                 </View>
 
-
-                {/*E-MAIL*/}
-                <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg ml-3 mr-3 mt-6 gap-2">
-                    <Feather style={{margin:7}} name="mail" size={25} color="#5a5a5a" />
-                    <TextInput
-                        className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                        placeholder="E-mail"
-                    />
+                {/* EMAIL */}
+                <View style={{flex:0.21}} className="gap-3 p-2">   
+                    {/*E-MAIL*/}
+                    <InputIcon>
+                        <Feather
+                            name="mail"
+                            size={24}
+                            color={globalStyles.icone.corIcones}
+                        />
+                        <TextInput
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            className="w-[90%] text-xl outline-none font-normal"
+                            placeholder="E-mail"
+                        />
+                    </InputIcon>
+                    {/*SENHA*/}
+                    <InputSenha placeholder={"Senha"} value={senha} setValue={setSenha} />
                 </View>
 
-
-                {/*SENHA*/}
-                <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg ml-3 mr-3 mt-6 gap-2">
-                    <Feather style={{margin:7}} name="lock" size={25} color="#5a5a5a" />
-                    <TextInput
-                        className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                        placeholder="Senha"
-                    />
-                    <Feather style={{margin:7}} name="eye" size={25} color="#5a5a5a" />
-                </View>
-
-                <View className="flex-row items-center mt-6">
-                    <Checkbox
-                        className="ml-14"
-                        value={isChecked}
-                        onValueChange={setChecked}
-                        color={isChecked ? '#4630EB' : undefined}
-                    />
-                    <Text className="font-semibold w-30 mx-3">Lembrar Login</Text>
-                    <Pressable><Text className="text-gray-500 w-30 mx-14">Esqueci a Senha</Text></Pressable>
+                {/* Opções */}
+                <View style={{flex:0.1}} className="flex-row items-start justify-around">
+                    <View className="flex flex-row items-center gap-3">
+                        <Checkbox
+                            value={isChecked}
+                            onValueChange={setChecked}
+                            color={isChecked ? globalStyles.paleta.verdePrimary : undefined}
+                        />
+                        <Text className="font-normal">Lembre-se de mim</Text>
+                    </View>
+                    <Pressable><Text className="text-gray-500">Esqueci a Senha</Text></Pressable>
                 </View>
 
 
                 {/*ENTRAR*/}
-                <View className="items-center mt-6">
-                    <Pressable style={{backgroundColor: "#04CBAC"}} className="mt-10 rounded-lg bg-emerald-500 p-3 w-2/4">
+                <View style={{flex:0.18}} className="items-center">
+                    <Pressable style={{backgroundColor: '#04CBAC'}} className="rounded-lg p-3 w-2/4">
                     <Text className="text-2xl text-white text-center">Logar</Text>
                     </Pressable>
-                </View>
-                
-                <View className="items-center mt-6 mb-10">
                     <Pressable style={{backgroundColor: "#fff"}} className="mt-10 border-gray-300 border-2 rounded-lg bg-emerald-500 p-3 w-3/4">
                     <Text className="text-2xl text-gray-500 text-center">Entrar sem Login</Text>
                     </Pressable>
                 </View>
 
                 {/*CADASTRO*/}
-                <View className="ml-20 flex-row items-center mt-6">
-                    <Text className="m-4 font-semibold">Não tem Cadastro? </Text>
-                    <Pressable className="m-2" onPress={()=>navigation.navigate("Cadastro")} ><Text className="text-gray-500">Cadastre-se</Text></Pressable>
+                <View style={{flex:0.23}} className="flex-row items-center justify-center">
+                    <Pressable className="flex flex-row" onPress={()=>navigation.navigate("Cadastro")} ><Text className="text-lg font-light">Não tem Cadastro? </Text>
+                    <Text className="text-lg text-gray-500">Cadastre-se</Text></Pressable>
                 </View>
             </View>
         </View>

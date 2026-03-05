@@ -2,7 +2,7 @@ import { View, Image, Pressable, TextInput } from "react-native";
 import globalStyles from "../globalStyles";
 import { useState } from "react";
 import Feather from "@expo/vector-icons/Feather";
-export default function InputSenha({ value, setValue }) {
+export default function InputSenha({ value, setValue, placeholder }) {
     
     const [mostrarSenha, setMostrarSenha] = useState(false);
   
@@ -18,7 +18,7 @@ export default function InputSenha({ value, setValue }) {
           value={value}
           onChangeText={setValue}
           className="w-80 text-xl outline-none font-normal"
-          placeholder="Senha"
+          placeholder={placeholder}
           keyboardType="default"
           />
         </View>
