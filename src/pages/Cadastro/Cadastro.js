@@ -10,6 +10,15 @@ import globalStyles from "../../globalStyles";
 
 export default function Cadastro() {
   const navigation = useNavigation();
+
+  function selectDate() {
+    setMostrarData(true);
+  }
+  function onChangeData(event, data) {
+    setMostrarData(false);
+    setDataNasc(data);
+  }
+
   const meses = [
     { num: 1, nome: "Janeiro" },
     { num: 2, nome: "Fevereiro" },
@@ -24,82 +33,118 @@ export default function Cadastro() {
     { num: 11, nome: "Novembro" },
     { num: 12, nome: "Dezembro" },
   ];
+  const [mostrarData, setMostrarData] = useState(false);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [cpf, setCpf] = useState("");
   const [sexo, setSexo] = useState();
-  const [dataNasc, setDataNasc] = useState(new Date());
+  const [dataNasc, setDataNasc] = useState(new Date(2007, 4, 20));
 
   return (
     <View className="p-3" style={{ flex: 1, flexDirection: "column" }}>
       {/*TITULO E BANNER*/}
-      <View style={{ flex: 0.5 }} className="items-center justify-center">
+      <View style={{ flex: 0.25 }} className="items-center justify-center">
         <Text className="font-normal text-5xl text-emerald-800">Cadastro</Text>
-        <Text className="text-emerald-900 text-center font-light text-xl">
+        <Text className="text-emerald-900 w-[80%] text-center font-light text-xl">
           Sua primeira vez no Art Connect? Vamos criar uma conta pra você
         </Text>
       </View>
       {/*FORM*/}
-      <View className="gap-2">
-        {/*Nome*/}
-        <InputIcon>
-          <Feather
-            name="user"
-            size={globalStyles.icone.size}
-            color={globalStyles.icone.corIcones}
-          />
-          <TextInput
-            value={nome}
-            onChangeText={setNome}
-            className="w-full text-xl outline-none font-normal"
-            placeholder="Nome Completo"
-          />
-        </InputIcon>
-        {/*Email*/}
-        <InputIcon>
-          <Feather name="mail" size={24} color={globalStyles.icone.corIcones} />
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            className="w-full text-xl outline-none font-normal"
-            placeholder="E-mail"
-          />
-        </InputIcon>
-        {/*Senha*/}
-        <InputSenha value={senha} setValue={setSenha} />
-        {/*Confirmar Senha*/}
-        <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} />
-        {/*CPF*/}
-        <InputIcon>
-          <Feather
-            name="key"
-            size={globalStyles.icone.size}
-            color={globalStyles.icone.corIcones}
-          />
-          <TextInput
-            value={cpf}
-            onChangeText={setCpf}
-            className="w-full text-xl outline-none font-normal"
-            placeholder="CPF"
-          />
-        </InputIcon>
+      <View style={{ flex: 0.6 }} className="gap-2">
+        <View className="gap-2 mb-5">
+          {/*Nome*/}
+          <InputIcon>
+            <Feather
+              name="user"
+              size={globalStyles.icone.size}
+              color={globalStyles.icone.corIcones}
+            />
+            <TextInput
+              value={nome}
+              keyboardType="default"
+              onChangeText={setNome}
+              className="w-full text-xl outline-none font-normal"
+              placeholder="Nome Completo"
+            />
+          </InputIcon>
+          {/*Email*/}
+          <InputIcon>
+            <Feather
+              name="mail"
+              size={24}
+              color={globalStyles.icone.corIcones}
+            />
+            <TextInput
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              className="w-full text-xl outline-none font-normal"
+              placeholder="E-mail"
+            />
+          </InputIcon>
+          {/*Senha*/}
+          <InputSenha value={senha} setValue={setSenha} />
+          {/*Confirmar Senha*/}
+          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} />
+          {/*CPF*/}
+          <InputIcon>
+            <Feather
+              name="key"
+              size={globalStyles.icone.size}
+              color={globalStyles.icone.corIcones}
+            />
+            <TextInput
+              keyboardType="numeric"
+              value={cpf}
+              onChangeText={setCpf}
+              className="w-full text-xl outline-none font-normal"
+              placeholder="CPF"
+            />
+          </InputIcon>
+        </View>
         {/* DATA E SEXO */}
-        <View className="flex flex-row justify-between">
+        <View className="flex flex-row justify-between mb-7">
           {/*DATA NASC*/}
           <View>
             <Text className="font-medium text-lg">Data de Nascimento</Text>
-            <Pressable>
-              <Text>Data de nascimento</Text>
+            <Pressable
+              onPress={selectDate}
+              className="p-4 flex flex-row justify-between items-center border border-stone-300 rounded-lg bg-stone-200"
+            >
+              <Text className="text-lg font-normal text-stone-800">
+                {dataNasc.toLocaleDateString()}
+              </Text>
+              <Feather
+                name="calendar"
+                size={24}
+                color={globalStyles.icone.corIcones}
+              />
             </Pressable>
+            {mostrarData && (
+              <RNDateTimePicker
+                value={dataNasc}
+                mode="date"
+                maximumDate={new Date()}
+                minimumDate={new Date(new Date().getFullYear()-100,new Date().getMonth()-1 ,new Date().getDate())}
+                is24Hour={true}
+                onChange={onChangeData}
+              />
+            )}
           </View>
           {/*SEXO*/}
           <View className="flex">
             <Text className="font-medium text-lg">Sexo</Text>
             <View className="border border-stone-300 rounded-lg bg-stone-200">
               <Picker
-                style={{ width: 150, height: 50 }}
+                style={{
+                  width: 150,
+                  height: "auto",
+                  color: "#7d7d7d",
+                  textAlign: "center",
+                  fontWeight: "semibold",
+                }}
                 selectedValue={sexo}
                 onValueChange={(itemValue) => setSexo(itemValue)}
               >
@@ -114,12 +159,17 @@ export default function Cadastro() {
           </View>
         </View>
         {/*PROXIMO E LOGIN*/}
-        <View className="items-center">
+        <View className="items-center gap-3">
           <Pressable className="flex flex-row">
-            <Text>Ja tem uma conta? </Text><Text>Faça Login</Text>
+            <Text className="text-lg font-normal">Ja tem uma conta? </Text>
+            <Text className="text-lg text-emerald-600">Faça Login</Text>
           </Pressable>
-          <Pressable className="bg-emerald-800 p-2 rounded-full">
-            <Feather name="arrow-right" size={globalStyles.icone.size} color={"#ffffff"} />
+          <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>navigation.navigate("CadastroEndereco")}>
+            <Feather
+              name="arrow-right"
+              size={globalStyles.icone.size}
+              color={"#ffffff"}
+            />
           </Pressable>
         </View>
       </View>
