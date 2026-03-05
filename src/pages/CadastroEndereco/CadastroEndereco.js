@@ -10,7 +10,8 @@ export default function CadastroEndereco() {
     const navigate = useNavigation();
     return (
         <View style={{flex:1}} className="p-5">
-            <View style={{flex:0.13}} className="flex flex-row justify-between items-end">
+            {/* TITULO */}
+            <View className="flex flex-row justify-between items-end">
                 <View className="">
                     <Pressable onPress={()=>navigate.navigate("Cadastro")}>
                         <Feather name="arrow-left-circle" size={32} color={globalStyles.paleta.verdePrimary} />
@@ -19,39 +20,48 @@ export default function CadastroEndereco() {
                 <Text className="text-emerald-700 font-light text-4xl">Endereço</Text>
                 <Text></Text>
             </View>
-            <View style={{flex:0.2}} className="justify-start items-center">
+            {/* SUBTITULO */}
+            <View className="justify-start items-center mb-10">
                 <Text className="w-[75%] text-center font-light text-xl">Confirme seu endereço nos campos abaixo</Text>
             </View>
-            <View style={{flex:0.1}} className="gap-2">
+            {/* CAMPOS */}
+            <View className="gap-2 mb-10">
+                {/* LOGRADOURO */}
                 <InputIcon>
-                    <Feather name="map" size={24} color="black" />
-                    <TextInput className="w-[86%]" placeholder="Logradouro" />
+                    <Feather name="map" size={24} color={globalStyles.paleta.corIcones} />
+                    <TextInput className="outline-none w-[90%] text-lg" placeholder="Logradouro" />
                 </InputIcon>
+                {/* COMPLEMENTO */}
                 <InputIcon>
-                    <Ionicons name="pin" size={24} color="black" />
-                    <TextInput className="w-[86%]" placeholder="Complemento" />
+                    <Ionicons name="pin" size={24} color={globalStyles.paleta.corIcones} />
+                    <TextInput className="outline-none w-[90%] text-lg" placeholder="Complemento" />
                 </InputIcon>
-                <View className="flex flex-row justify-between gap-">
-                    <View className="flex flex-row w-[38%] bg-stone-200 border border-stone-300 rounded-lg px-1">
+                <View className="flex flex-row justify-between">
+                    {/* CEP */}
+                    <View className="p-1.5 flex flex-row w-[38%] bg-stone-200 border border-stone-300 rounded-lg gap-1.5">
                         <Feather name="map-pin" size={24} color={globalStyles.paleta.corIcones} style={{alignSelf: 'center'}} />
-                        <TextInput className="w-[83%]" placeholder="CEP" />
+                        <TextInput className="outline-none text-lg w-[90%]" placeholder="CEP" />
                     </View>
-                    <View className="flex items-center w-[60%] flex-row bg-stone-200 border border-stone-300 rounded-lg">
-                        <TextInput className="w-[88%]" placeholder="Bairro" />
+                    {/* BAIRRO */}
+                    <View className="flex items-center w-[60%] p-1.5 flex-row bg-stone-200 border border-stone-300 rounded-lg">
+                        <TextInput className="outline-none w-full text-lg" placeholder="Bairro" />
                     </View>
                 </View>
+                {/* CIDADE */}
                 <InputIcon>
                     <MaterialIcons name="location-city" size={24} color={globalStyles.paleta.corIcones} />
-                    <TextInput className="w-[90%]" placeholder="Cidade" />
+                    <TextInput className="text-lg w-[90%] outline-none" placeholder="Cidade" />
                 </InputIcon>
-                <View className="border w-[65%] self-center border-stone-300 rounded-lg bg-stone-200">
+                {/* UF */}
+                <View className="border w-[65%] p-2 self-center border-stone-300 rounded-lg bg-stone-200">
                     <Picker>
                         <Picker.Item label="UF" />
                     </Picker>
                 </View>
             </View>
+            {/* PROXIMO */}
             <View className="items-center">
-                <Pressable className=" p-2 bg-emerald-700 rounded-full">
+                <Pressable onPress={()=>navigate.navigate("TipoArte")} className=" p-2 bg-emerald-700 rounded-full">
                     <Feather name="arrow-right" size={24} color="white" />
                 </Pressable>
             </View>
