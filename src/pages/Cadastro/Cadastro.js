@@ -140,7 +140,7 @@ export default function Cadastro() {
               <Picker
                 style={{
                   width: 150,
-                  height: 50,
+                  height: "auto",
                   color: "#7d7d7d",
                   textAlign: "center",
                   fontWeight: "semibold",
@@ -164,7 +164,7 @@ export default function Cadastro() {
             <Text className="text-lg font-normal">Ja tem uma conta? </Text>
             <Text className="text-lg text-emerald-600">Faça Login</Text>
           </Pressable>
-          <Pressable className="bg-teal-700 p-2 rounded-full">
+          <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>navigation.navigate("CadastroEndereco")}>
             <Feather
               name="arrow-right"
               size={globalStyles.icone.size}
