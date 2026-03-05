@@ -8,12 +8,16 @@ import "./global.css";
 import CadastroEndereco from "./src/pages/CadastroEndereco/CadastroEndereco";
 import Home from "./src/pages/Home/Home";
 import SeuPerfil from "./src/pages/SeuPerfil/SeuPerfil";
+import EsqueciSenha from "./src/pages/EsqueciSenha/EsqueciSenha";
+
 
 export default function App() {
   const Stack = createStackNavigator();
   return (
       <NavigationContainer>
         <Stack.Navigator>
+    
+          <Stack.Screen name="EsqueciSenha" component={EsqueciSenha} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
           <Stack.Screen name="TipoArte" component={TipoArte} options={{headerShown: false}} />
