@@ -1,5 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
-import { TextInput } from "react-native-web";
+import { View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
