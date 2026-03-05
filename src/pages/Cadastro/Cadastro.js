@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Image, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputSenha from "../../components/InputSenha";
 import InputIcon from "../../components/InputIcon";
@@ -18,21 +18,6 @@ export default function Cadastro() {
     setMostrarData(false);
     setDataNasc(data);
   }
-
-  const meses = [
-    { num: 1, nome: "Janeiro" },
-    { num: 2, nome: "Fevereiro" },
-    { num: 3, nome: "Março" },
-    { num: 4, nome: "Abril" },
-    { num: 5, nome: "Maio" },
-    { num: 6, nome: "Junho" },
-    { num: 7, nome: "Julho" },
-    { num: 8, nome: "Agosto" },
-    { num: 9, nome: "Setembro" },
-    { num: 10, nome: "Outubro" },
-    { num: 11, nome: "Novembro" },
-    { num: 12, nome: "Dezembro" },
-  ];
   const [mostrarData, setMostrarData] = useState(false);
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
