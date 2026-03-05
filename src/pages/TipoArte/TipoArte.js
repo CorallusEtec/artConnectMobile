@@ -5,6 +5,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 {
   /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
@@ -16,15 +17,9 @@ export default function TipoArte() {
   const [selectedArt, setSelectedArt] = useState();
 
   return (
-    <View style={{ flex: 1, flexDirection: "column" }}>
+    <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
       {/*TÍTULO*/}
-      <View
-        style={{
-          flex: 0.9,
-          flexDirection: "column",
-          backgroundColor: "#ffffff",
-        }}
-      >
+      <View>
         <View className="items-center mb-2 mt-10">
           <Text className="text-5xl font-light text-gray-500 m-2.5">
             Olá Fulano
@@ -77,6 +72,6 @@ export default function TipoArte() {
           </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -4,11 +4,12 @@ import { useNavigation } from "@react-navigation/native"
 import Feather from '@expo/vector-icons/Feather';
 import Post from "../../components/Post";
 import CompSeuPerfil from "../../components/CompSeuPerfil";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SeuPerfil() {
     const navigation = useNavigation();
     return (
-        <View style={{flex:1}}>
+        <SafeAreaView style={{flex:1}}>
             {/* HEADER */}
             <View className="flex-row bg-teal-500 p-4 items-center justify-between">
                 <View className="flex-row items-center gap-3">
@@ -28,6 +29,6 @@ export default function SeuPerfil() {
             </View>
             {/* BARRA DE NAVEGAÇÃO */}
             <IconBar />
-        </View>
+        </SafeAreaView>
     )
 }

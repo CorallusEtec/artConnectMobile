@@ -7,6 +7,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../globalStyles";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Cadastro() {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ export default function Cadastro() {
   const [dataNasc, setDataNasc] = useState(new Date(2007, 4, 20));
 
   return (
-    <View className="p-3" style={{ flex: 1, flexDirection: "column" }}>
+    <SafeAreaView className="p-3" style={{ flex: 1, flexDirection: "column" }}>
       {/*TITULO E BANNER*/}
       <View style={{ flex: 0.25 }} className="items-center justify-center">
         <Text className="font-normal text-5xl text-emerald-800">Cadastro</Text>
@@ -158,6 +159,6 @@ export default function Cadastro() {
           </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

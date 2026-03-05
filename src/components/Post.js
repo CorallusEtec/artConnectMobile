@@ -35,8 +35,8 @@ export default function Post() {
         </Text>
       </View>
       {/* REAÇÕES */}
-      <View className="flex-row  justify-between">
-        <View className="flex-row gap-5 items-center">
+      <View className="flex-row  justify-around gap-20">
+        <View className="flex-row gap-7 justify-center items-center">
           {/* LIKE */}
           <View className="flex-row items-center gap-2">
             <Text className="font-semibold text-lg">5</Text>
@@ -60,7 +60,7 @@ export default function Post() {
           </View>
         </View>
         <Pressable className="pr-7">
-            <Feather name="share-2" size={24} color="black" />
+          <Feather name="share" size={24} color="black" />
         </Pressable>
       </View>
     </View>

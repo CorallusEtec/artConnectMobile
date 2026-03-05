@@ -6,10 +6,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
+import { SafeAreaView } from "react-native-safe-area-context";
 export default function CadastroEndereco() {
     const navigate = useNavigation();
     return (
-        <View style={{flex:1}} className="p-5">
+        <SafeAreaView style={{flex:1}} className="p-5">
             {/* TITULO */}
             <View className="flex flex-row justify-between items-end">
                 <View className="">
@@ -65,6 +66,6 @@ export default function CadastroEndereco() {
                     <Feather name="arrow-right" size={24} color="white" />
                 </Pressable>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
