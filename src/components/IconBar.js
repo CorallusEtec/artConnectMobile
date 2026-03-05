@@ -11,7 +11,7 @@ export default function IconBar() {
             <Pressable>
                 <Feather name="plus" size={24} color="white" />
             </Pressable>
-            <Pressable>
+            <Pressable onPress={()=>navigation.navigate("Home")}>
                 <Feather name="home" size={24} color="white" />
             </Pressable>
             <Pressable>

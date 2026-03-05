@@ -17,7 +17,7 @@ export default function InputSenha({ value, setValue }) {
           secureTextEntry={!mostrarSenha}
           value={value}
           onChangeText={setValue}
-          className="w-80 text-xl outline-none font-normal"
+          className="w-full text-xl outline-none font-normal"
           placeholder="Senha"
           keyboardType="default"
           />
