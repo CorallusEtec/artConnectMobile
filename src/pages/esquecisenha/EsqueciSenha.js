@@ -1,19 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
 import { Text, View, Image, Pressable, TextInput, Button } from 'react-native';
 import styles from './estilo.js';
 import { useNavigation } from '@react-navigation/native';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
-import Fontisto from '@expo/vector-icons/Fontisto';
 
 
 
-export default function Home() {
+
+export default function EsqueciSenha() {
     const navigation = useNavigation();
-    const [number, onChangeNumber] = React.useState('');
     return (
+
         <View style={styles.container}>
             <StatusBar style="auto" />
+
+  {/*Botao Voltar*/}
 
             <View style={styles.Bloco1}>
                 <Pressable onPress={() => navigation.navigate('Login')}>
@@ -23,6 +24,8 @@ export default function Home() {
 
             </View>
 
+
+  {/*/Text Input do Email */}
             <View style={styles.Bloco2}>
 
                 <Text style={styles.texto}>Esqueceu a senha?</Text>
@@ -43,12 +46,9 @@ export default function Home() {
                     />
                 </View>
 
-
-
             </View>
 
-
-
+  {/*/Botão de Enviar as Informações */}
 
 
             <View style={styles.Bloco3}>
@@ -57,21 +57,7 @@ export default function Home() {
                     <Text className="text-md text-white text-center font-semibold">Enviar</Text>
                 </Pressable>
 
-
             </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         </View>
 

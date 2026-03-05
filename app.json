@@ -25,6 +25,15 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
+<<<<<<< HEAD
     }
   }
 }
+=======
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker"
+    ]
+  }
+}
+>>>>>>> fa3c8b21f13e5188a2354562dae8765a42e3ecb8
