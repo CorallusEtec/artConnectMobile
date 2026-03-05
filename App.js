@@ -5,12 +5,14 @@ import Cadastro from "./src/pages/Cadastro/Cadastro";
 import { NavigationContainer } from "@react-navigation/native";
 import "./global.css";
 import CadastroEndereco from "./src/pages/CadastroEndereco/CadastroEndereco";
+import Home from "./src/pages/Home/Home";
 
 export default function App() {
   const Stack = createStackNavigator();
   return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
           <Stack.Screen name="CadastroEndereco" component={CadastroEndereco} options={{headerShown: false}} />
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
           <Stack.Screen name="TipoArte" component={TipoArte} options={{headerShown: false}} />
