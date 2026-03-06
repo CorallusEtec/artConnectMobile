@@ -5,6 +5,7 @@ import { Checkbox } from "expo-checkbox";
 import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
 import ArtistaService from "../../services/ArtistaService";
+import useStore from "../../store";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -17,7 +18,8 @@ export default function Login() {
   async function logar() {
     const data = await ArtistaService.login(email, senha);
     await ArtistaService.saveUserLocal(data);
-    navigation.navigate("Home", data);
+
+    navigation.navigate("Home");
   }
 
   return (
