@@ -4,9 +4,11 @@ import { useNavigation } from "@react-navigation/native"
 import Feather from '@expo/vector-icons/Feather';
 import Post from "../../components/Post";
 import CompSeuPerfil from "../../components/CompSeuPerfil";
+import useStore from "../../store";
 
 export default function SeuPerfil() {
     const navigation = useNavigation();
+    const usuario = useStore(state => state.usuario)
     return (
         <View style={{flex:1}}>
             {/* HEADER */}

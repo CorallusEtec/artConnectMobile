@@ -1,13 +1,9 @@
-import { Component } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import { View, Pressable, Text } from "react-native";
-export default class CompSeuPerfil extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+import useStore from "../store";
+export default function CompSeuPerfil() {
+  const usuario = useStore(state=>state.usuario);
     return (
       <View className=" bg-stone-200 rounded-lg gap-2 p-2">
         <View className="flex-row">
@@ -19,7 +15,7 @@ export default class CompSeuPerfil extends Component {
             <View className="flex-row items-center justify-between">
               <View className="flex-row justify-center w-[85%]">
                 <Text className="text-stone-800 text-lg font-semibold">
-                  Nome perfil
+                  {usuario.nome}
                 </Text>
               </View>
               <Pressable className="w-[15%]">
@@ -59,5 +55,4 @@ export default class CompSeuPerfil extends Component {
         </View>
       </View>
     );
-  }
 }
