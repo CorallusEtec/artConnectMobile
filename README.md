@@ -1,5 +1,9 @@
 # ArtConnect (Mobile)
 
+## Guia para Desenvolvedores
+
+Guia de apoio para equipe de desenvolvedores: [Guia](https://github.com/CorallusEtec/.github/blob/main/profile/DEV.md)
+
 ## Dados do projeto
 - Início de desenvolvimento: 19/02/2026
 - Linguagem e tecnologias: Javascript, TailwindCSS
