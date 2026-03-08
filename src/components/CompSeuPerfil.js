@@ -2,8 +2,10 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
 import { View, Pressable, Text } from "react-native";
 import useStore from "../store";
+import { useNavigation } from "@react-navigation/native";
 export default function CompSeuPerfil() {
   const usuario = useStore(state=>state.usuario);
+  const navigator = useNavigation()
     return (
       <View className=" bg-stone-200 rounded-lg gap-2 p-2">
         <View className="flex-row">
@@ -18,7 +20,7 @@ export default function CompSeuPerfil() {
                   {usuario.nome}
                 </Text>
               </View>
-              <Pressable className="w-[15%]">
+              <Pressable onPress={()=>navigator.navigate("EditarPerfil")} className="w-[15%]">
                 <Feather name="edit" size={24} color="black" />
               </Pressable>
             </View>
