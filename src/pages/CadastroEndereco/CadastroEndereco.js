@@ -27,7 +27,7 @@ export default function CadastroEndereco() {
         dadosCadastro.cep = cep;
         dadosCadastro.bairro = bairro;
         dadosCadastro.cidade = cidade;
-        dadosCadastro.uf = uf;
+        dadosCadastro.estado = uf;
         const artista = new ArtistaModel(dadosCadastro);
         alterStateUsuario(artista);
         navigate.navigate("TipoArte");

@@ -10,7 +10,4 @@ export default class ArteService {
             console.error(erro);
         }
     }
-
-
-
 }

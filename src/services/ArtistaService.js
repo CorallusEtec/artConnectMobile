@@ -17,10 +17,14 @@ export default class ArtistaService {
     static async save(artista) {
         try {
             const data = await fetch(`${config.apiUrl}/artista/cadastro`,{
-                body: artista,
+                body: JSON.stringify(artista),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 method: 'POST'
             });
-            console.log(data.statusText)
+            console.log(data.status)
         } catch(erro) {
             console.error('Erro ao buscar artistas:', erro);
         }

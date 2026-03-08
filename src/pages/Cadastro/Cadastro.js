@@ -34,9 +34,9 @@ export default function Cadastro() {
       nome: nome,
       email: email,
       senha: senha,
-      cpfArtista: cpf,
-      dataNascArtista: dataNasc,
-      sexoArtista: sexo
+      cpf: cpf,
+      dataNasc: dataNasc.toISOString().split("T")[0],
+      sexo: sexo
     }
     alterStateUsuario(cadastro);
     navigation.navigate("CadastroEndereco");
