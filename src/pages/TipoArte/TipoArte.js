@@ -1,19 +1,16 @@
 import { View, Text, Pressable } from "react-native";
-import { TextInput } from "react-native-web";
 import { useNavigation } from "@react-navigation/native";
-import Feather from "@expo/vector-icons/Feather";
-import { Checkbox } from "expo-checkbox";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-
-{
-  /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
-}
+import useStore from "../../store";
 
 export default function TipoArte() {
+
+  const usuario = useStore(store=>store.usuario);
   const navigation = useNavigation();
-  const [isChecked, setChecked] = useState(false);
   const [selectedArt, setSelectedArt] = useState();
+
+  console.log(usuario);
 
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
@@ -27,7 +24,7 @@ export default function TipoArte() {
       >
         <View className="items-center mb-2 mt-10">
           <Text className="text-5xl font-light text-gray-500 m-2.5">
-            Olá Fulano
+            Olá {usuario.nome}
           </Text>
 
           <View className="items-center">
@@ -69,7 +66,6 @@ export default function TipoArte() {
         {/*CRIAR CONTA*/}
         <View className="items-center">
           <Pressable
-            onPress={()=>navigation.navigate("Home")}
             style={{ backgroundColor: "#04CBAC" }}
             className="rounded-lg bg-emerald-500 p-3 w-2/4"
           >

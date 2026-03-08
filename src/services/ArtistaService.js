@@ -1,16 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import config from './config';
-
 export default class ArtistaService {
 
-    static async teste() {
-        try {
-            const data = await fetch(`${config.apiUrl}/artista/todos`);
-            return data.json();
-        } catch (erro) {
-            console.error('Erro ao buscar artistas:', erro);
-        }
-    }
     static async login(email, senha) {
         try {
             const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
@@ -23,6 +14,17 @@ export default class ArtistaService {
         }
     }
 
+    static async save(artista) {
+        try {
+            const data = await fetch(`${config.apiUrl}/artista/cadastro`,{
+                body: artista,
+                method: 'POST'
+            });
+            console.log(data.statusText)
+        } catch(erro) {
+            console.error('Erro ao buscar artistas:', erro);
+        }
+    }
 
     static async saveUserLocal(user) {
         await AsyncStorage.setItem('@login', JSON.stringify(user));

@@ -18,8 +18,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Splash" component={Splash} options={{headerShown: false}} />
-          <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="EsqueciSenha" component={EsqueciSenha} options={{headerShown: false}} />
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
           <Stack.Screen name="CadastroEndereco" component={CadastroEndereco} options={{headerShown: false}} />
           <Stack.Screen name="TipoArte" component={TipoArte} options={{headerShown: false}} />

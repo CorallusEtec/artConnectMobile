@@ -8,7 +8,6 @@ import useStore from "../../store";
 
 export default function SeuPerfil() {
     const navigation = useNavigation();
-    const usuario = useStore(state => state.usuario)
     return (
         <View style={{flex:1}}>
             {/* HEADER */}

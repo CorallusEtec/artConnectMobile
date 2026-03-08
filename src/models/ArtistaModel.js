@@ -1,3 +1,5 @@
+import UsuarioModel from './UsuarioModel';
+
 export default class ArtistaModel extends UsuarioModel {
     constructor(data) {
         super(data);
