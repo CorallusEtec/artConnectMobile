@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
 import { useState } from "react";
+import InputSenha from "../../components/InputSenha";
 
 {
   /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
@@ -46,24 +47,7 @@ export default function Login() {
             </View>
 
             {/*SENHA*/}
-            <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg gap-2">
-              <Feather
-                style={{ margin: 7 }}
-                name="lock"
-                size={25}
-                color="#5a5a5a"
-              />
-              <TextInput
-                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                placeholder="Senha"
-              />
-              <Feather
-                style={{ margin: 7 }}
-                name="eye"
-                size={25}
-                color="#5a5a5a"
-              />
-            </View>
+              <InputSenha  />
           </View>
             {/* ESQUECI SENHA ETC  */}
           <View className="flex-row justify-between">
@@ -107,11 +91,13 @@ export default function Login() {
 
         {/*CADASTRO*/}
         <View className="flex-row justify-center">
-          <Text className="font-light text-lg">Não tem Cadastro? </Text>
           <Pressable
+            className="flex-row justify-center"
             onPress={() => navigation.navigate("Cadastro")}
           >
-            <Text className="font-light text-lg text-gray-500">Cadastre-se</Text>
+          <Text className="font-light text-lg">Não tem Cadastro? </Text>
+          
+            <Text className="font-normal text-lg text-gray-500">Cadastre-se</Text>
           </Pressable>
         </View>
       </View>
