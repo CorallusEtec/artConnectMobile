@@ -10,9 +10,12 @@ import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ArtistaService from "../../services/ArtistaService";
+import useStore from "../../store";
 
 export default function EditarPerfil() {
     const navigation = useNavigation();
+    const usuario = useStore((state) => state.usuario);
+    const alter = useStore((state) => state.alter);
     const [isChecked, setChecked] = useState(false);
     const [selectedUf, setSelectedUf] = useState();
 
@@ -35,13 +38,12 @@ export default function EditarPerfil() {
         };
         await ArtistaService.alterarUsuario(dadosUsuario);
 
-        const user = await ArtistaService.getUserLocal();
         const userAtualizado = {
-            ...user,
+            ...usuario,
             ...dadosUsuario
         };
+        alter(userAtualizado);
         await ArtistaService.saveUserLocal(userAtualizado);
-        console.log(userAtualizado);
         navigation.goBack();
         } catch (error) {
             console.error(error);
@@ -49,22 +51,16 @@ export default function EditarPerfil() {
     } 
 
         // CARREGA VALOR NOS INPUTS
-        async function carregarDados() {
-            const user = await ArtistaService.getUserLocal();
-
-            if(user) {
-                setNome(user.nome || "");
-                setLogradouro(user.nomeLog || "");
-                setComplemento(user.complemento || "");
-                setCep(user.cep || "");
-                setBairro(user.bairro || "");
-                setCidade(user.cidade || "");   
-            }
-        }
-
         useEffect(() => {
-            carregarDados();
-        }, []);
+            if(usuario) {
+                setNome(usuario.nome || "");
+                setLogradouro(usuario.nomeLog || "");
+                setComplemento(usuario.complemento || "");
+                setCep(usuario.cep || "");
+                setBairro(usuario.bairro || "");
+                setCidade(usuario.cidade || "");
+            }
+        }, [usuario]);
 
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "#04CBAC" }}>
