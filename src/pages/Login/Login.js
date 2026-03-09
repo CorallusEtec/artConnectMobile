@@ -103,11 +103,13 @@ export default function Login() {
 
         {/*CADASTRO*/}
         <View className="flex-row justify-center">
-          <Text className="font-light text-lg">Não tem Cadastro? </Text>
           <Pressable
+            className="flex-row justify-center"
             onPress={() => navigation.navigate("Cadastro")}
           >
-            <Text className="font-light text-lg text-gray-500">Cadastre-se</Text>
+          <Text className="font-light text-lg">Não tem Cadastro? </Text>
+          
+            <Text className="font-normal text-lg text-gray-500">Cadastre-se</Text>
           </Pressable>
         </View>
       </View>

@@ -160,9 +160,9 @@ export default function Cadastro() {
         </View>
         {/*PROXIMO E LOGIN*/}
         <View className="items-center gap-3">
-          <Pressable className="flex flex-row">
-            <Text className="text-lg font-normal">Ja tem uma conta? </Text>
-            <Text className="text-lg text-emerald-600">Faça Login</Text>
+          <Pressable onPress={()=>navigation.navigate("Login")} className="flex flex-row">
+            <Text className="text-lg font-light">Ja tem uma conta? </Text>
+            <Text className="text-lg font-normal text-emerald-600">Faça Login</Text>
           </Pressable>
           <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>coletarDados()}>
             <Feather
