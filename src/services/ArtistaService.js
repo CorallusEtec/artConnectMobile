@@ -36,4 +36,44 @@ export default class ArtistaService {
             return JSON.parse(user);
         }
     }
+
+    static async alterarUsuario(dadosUsuario) {
+        try{
+            const userString = await AsyncStorage.getItem('@login');
+            if (!userString) {
+                throw new Error ("Usuario não encontrado")
+            }
+
+            const user = JSON.parse(userString);
+            const id = user.id;
+            const response = await fetch(`${config.apiUrl}/artista/alterar`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,  
+                    nome: dadosUsuario.nome,   
+                    bairro: dadosUsuario.bairro,
+                    cep: dadosUsuario.cep,
+                    cidade: dadosUsuario.cidade,
+                    complemento: dadosUsuario.complemento,
+                    nomeLog: dadosUsuario.nomeLog,
+                    numLog: dadosUsuario.numLog,
+                    tipoLog: dadosUsuario.tipoLog,
+                    estado: dadosUsuario.estado
+                })
+        });
+
+        const data = await response.text();
+
+        if(!response.ok) {
+            throw new Error(data || "Erro ao alterar");
+        }
+        return data
+    } catch(error) {
+        console.error("Erro ao alterar usuario:",error);
+        throw error;
+    }
+    }
 }
