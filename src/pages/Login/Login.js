@@ -6,7 +6,6 @@ import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
-import InputSenha from "../../components/InputSenha";
 import Logo from "../../components/Logo";
 
 {
@@ -68,7 +67,6 @@ export default function Login() {
 
             {/*SENHA*/}
             <InputSenha value={senha} setValue={setSenha} />
-              <InputSenha  />
           </View>
             {/* ESQUECI SENHA ETC  */}
           <View className="flex-row justify-between">
