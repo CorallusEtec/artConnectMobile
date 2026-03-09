@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
@@ -6,6 +6,12 @@ import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
+import InputSenha from "../../components/InputSenha";
+import Logo from "../../components/Logo";
+
+{
+  /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
+}
 
 export default function Login() {
   const navigation = useNavigation();
@@ -26,9 +32,11 @@ export default function Login() {
   return (
     <View style={{ flex: 1, backgroundColor: "#04CBAC" }}>
       {/*IMAGEM DE FUNDO*/}
-      <View style={{ flex: 0.15, backgroundColor: "#04CBAC" }}></View>
+      <View className="flex items-center" style={{ backgroundColor: "#04CBAC" }}>
+        <Logo height={200} width={300} />
+      </View>
 
-      <View className="bg-white rounded-t-xl" style={{ flex: 0.9 }}>
+      <View className="bg-white rounded-t-xl" style={{ flex: 1 }}>
         {/*TÍTULO*/}
         <View className="items-center">
           <Text className="text-5xl text-gray-600">Login</Text>
@@ -60,6 +68,7 @@ export default function Login() {
 
             {/*SENHA*/}
             <InputSenha value={senha} setValue={setSenha} />
+              <InputSenha  />
           </View>
             {/* ESQUECI SENHA ETC  */}
           <View className="flex-row justify-between">
@@ -103,11 +112,13 @@ export default function Login() {
 
         {/*CADASTRO*/}
         <View className="flex-row justify-center">
-          <Text className="font-light text-lg">Não tem Cadastro? </Text>
           <Pressable
+            className="flex-row justify-center"
             onPress={() => navigation.navigate("Cadastro")}
           >
-            <Text className="font-light text-lg text-gray-500">Cadastre-se</Text>
+          <Text className="font-light text-lg">Não tem Cadastro? </Text>
+          
+            <Text className="font-normal text-lg text-gray-500">Cadastre-se</Text>
           </Pressable>
         </View>
       </View>
