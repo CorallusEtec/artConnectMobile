@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
+import Logo from '../../components/Logo';
 
 export default function Splash() {
     const navigate = useNavigation();
@@ -13,7 +14,7 @@ export default function Splash() {
     return (
         <View style={{flex:1}} className="bg-teal-600 items-center gap-5">
             <View style={{flex:0.5}} className="justify-end">
-                <Image resizeMode='contain' style={{width:300, height:200}} tintColor={'white'} source={require('../../../assets/img/logo_transparent.png')} />
+                <Logo width={300} height={200} />
             </View>
             <View style={{flex:1}} className="justify-start">
                 <ActivityIndicator size={'large'} color={"#ffffff"} />
