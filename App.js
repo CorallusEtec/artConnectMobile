@@ -17,6 +17,7 @@ export default function App() {
   return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="SeuPerfil" component={SeuPerfil} options={{headerShown: false}} />
           <Stack.Screen name="Splash" component={Splash} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="EsqueciSenha" component={EsqueciSenha} options={{headerShown: false}} />
@@ -25,7 +26,6 @@ export default function App() {
           <Stack.Screen name="TipoArte" component={TipoArte} options={{headerShown: false}} />
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{headerShown: false}} />
-          <Stack.Screen name="SeuPerfil" component={SeuPerfil} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
   );
