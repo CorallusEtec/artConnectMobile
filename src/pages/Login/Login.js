@@ -17,14 +17,14 @@ export default function Login() {
   const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
-  const alterUsuario = useStore(state=>state.alter)
+  const alterStateUsuario = useStore(state=>state.alter)
+  
 
 
   async function logar() {
     const data = await ArtistaService.login(email, senha);
     await ArtistaService.saveUserLocal(data);
-    alterUsuario(data)
+    alterStateUsuario(data);
     navigation.navigate("Home");
   }
 

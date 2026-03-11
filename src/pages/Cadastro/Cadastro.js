@@ -7,7 +7,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../globalStyles";
-
+import useStore from '../../store';
 export default function Cadastro() {
   const navigation = useNavigation();
 
@@ -24,8 +24,23 @@ export default function Cadastro() {
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [cpf, setCpf] = useState("");
-  const [sexo, setSexo] = useState();
+  const [sexo, setSexo] = useState('M');
   const [dataNasc, setDataNasc] = useState(new Date(2007, 4, 20));
+
+  const alterStateUsuario = useStore(store=>store.alter)
+
+  function coletarDados() {
+    const cadastro = {
+      nome: nome,
+      email: email,
+      senha: senha,
+      cpf: cpf,
+      dataNasc: dataNasc.toISOString().split("T")[0],
+      sexo: sexo
+    }
+    alterStateUsuario(cadastro);
+    navigation.navigate("CadastroEndereco");
+  }
 
   return (
     <View className="p-3" style={{ flex: 1, flexDirection: "column" }}>
@@ -133,9 +148,9 @@ export default function Cadastro() {
                 selectedValue={sexo}
                 onValueChange={(itemValue) => setSexo(itemValue)}
               >
-                <Picker.Item value="Masculino" label="Masculino" />
+                <Picker.Item value="m" label="Masculino" />
                 <Picker.Item
-                  value="Masculino"
+                  value="f"
                   label="Feminino"
                   className="text-black"
                 />
@@ -149,7 +164,7 @@ export default function Cadastro() {
             <Text className="text-lg font-light">Ja tem uma conta? </Text>
             <Text className="text-lg font-normal text-emerald-600">Faça Login</Text>
           </Pressable>
-          <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>navigation.navigate("CadastroEndereco")}>
+          <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>coletarDados()}>
             <Feather
               name="arrow-right"
               size={globalStyles.icone.size}

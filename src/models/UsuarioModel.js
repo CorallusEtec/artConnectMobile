@@ -10,6 +10,6 @@ export default class UsuarioModel {
         this.cep = data.cep;
         this.bairro = data.bairro;
         this.cidade = data.cidade;
-        this.uf = data.uf;
+        this.estado = data.estado;
     }
 }

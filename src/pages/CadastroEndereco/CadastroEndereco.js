@@ -6,8 +6,33 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
+import { useEffect, useState } from "react";
+import useStore from "../../store";
+import ArtistaModel from "../../models/ArtistaModel";
 export default function CadastroEndereco() {
     const navigate = useNavigation();
+    const [log, setLog] = useState();
+    const [comp, setComp] = useState();
+    const [cep, setCep] = useState();
+    const [bairro, setBairro] = useState();
+    const [cidade, setCidade] = useState();
+    const [uf, setUf] = useState("SP");
+    
+    const dadosCadastro = useStore(store=>store.usuario)
+    const alterStateUsuario = useStore(store=>store.alter)
+
+    function coletarDados() {
+        dadosCadastro.nomeLog = log;
+        dadosCadastro.complemento = comp;
+        dadosCadastro.cep = cep;
+        dadosCadastro.bairro = bairro;
+        dadosCadastro.cidade = cidade;
+        dadosCadastro.estado = uf;
+        const artista = new ArtistaModel(dadosCadastro);
+        alterStateUsuario(artista);
+        navigate.navigate("TipoArte");
+    }
+
     return (
         <View style={{flex:1}} className="p-5">
             {/* TITULO */}
@@ -29,39 +54,39 @@ export default function CadastroEndereco() {
                 {/* LOGRADOURO */}
                 <InputIcon>
                     <Feather name="map" size={24} color={globalStyles.paleta.corIcones} />
-                    <TextInput className="outline-none w-[90%] text-lg" placeholder="Logradouro" />
+                    <TextInput value={log} onChangeText={setLog} className="outline-none w-[90%] text-lg" placeholder="Logradouro" />
                 </InputIcon>
                 {/* COMPLEMENTO */}
                 <InputIcon>
                     <Ionicons name="pin" size={24} color={globalStyles.paleta.corIcones} />
-                    <TextInput className="outline-none w-[90%] text-lg" placeholder="Complemento" />
+                    <TextInput value={comp} onChangeText={setComp} className="outline-none w-[90%] text-lg" placeholder="Complemento" />
                 </InputIcon>
                 <View className="flex flex-row justify-between">
                     {/* CEP */}
                     <View className="p-1.5 flex flex-row w-[38%] bg-stone-200 border border-stone-300 rounded-lg gap-1.5">
                         <Feather name="map-pin" size={24} color={globalStyles.paleta.corIcones} style={{alignSelf: 'center'}} />
-                        <TextInput className="outline-none text-lg w-[90%]" placeholder="CEP" />
+                        <TextInput value={cep} onChangeText={setCep} className="outline-none text-lg w-[90%]" placeholder="CEP" />
                     </View>
                     {/* BAIRRO */}
                     <View className="flex items-center w-[60%] p-1.5 flex-row bg-stone-200 border border-stone-300 rounded-lg">
-                        <TextInput className="outline-none w-full text-lg" placeholder="Bairro" />
+                        <TextInput value={bairro} onChangeText={setBairro} className="outline-none w-full text-lg" placeholder="Bairro" />
                     </View>
                 </View>
                 {/* CIDADE */}
                 <InputIcon>
                     <MaterialIcons name="location-city" size={24} color={globalStyles.paleta.corIcones} />
-                    <TextInput className="text-lg w-[90%] outline-none" placeholder="Cidade" />
+                    <TextInput value={cidade} onChangeText={setCidade} className="text-lg w-[90%] outline-none" placeholder="Cidade" />
                 </InputIcon>
                 {/* UF */}
                 <View className="border w-[65%] p-2 self-center border-stone-300 rounded-lg bg-stone-200">
-                    <Picker>
+                    <Picker selectedValue={uf} onValueChange={(value, index)=>setUf(value)}>
                         <Picker.Item label="UF" />
                     </Picker>
                 </View>
             </View>
             {/* PROXIMO */}
             <View className="items-center">
-                <Pressable onPress={()=>navigate.navigate("TipoArte")} className=" p-2 bg-emerald-700 rounded-full">
+                <Pressable onPress={()=>coletarDados()} className=" p-2 bg-emerald-700 rounded-full">
                     <Feather name="arrow-right" size={24} color="white" />
                 </Pressable>
             </View>
