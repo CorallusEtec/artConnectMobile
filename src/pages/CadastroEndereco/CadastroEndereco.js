@@ -1,4 +1,5 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import globalStyles from "../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -10,6 +11,7 @@ import { useEffect, useState } from "react";
 import useStore from "../../store";
 import ArtistaModel from "../../models/ArtistaModel";
 export default function CadastroEndereco() {
+
     const navigate = useNavigation();
     const [log, setLog] = useState();
     const [comp, setComp] = useState();
@@ -32,6 +34,24 @@ export default function CadastroEndereco() {
         alterStateUsuario(artista);
         navigate.navigate("TipoArte");
     }
+    const [ufs, setUfs] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchUfs = async () => {
+        try {
+        const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+        const data = await response.json();
+        setUfs(data);
+        } finally {
+        setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUfs();
+    }, []);
+
+    if (loading) return <View><ActivityIndicator size="large" style={{ margin: 300 }} /></View>;
 
     return (
         <View style={{flex:1}} className="p-5">
@@ -79,16 +99,25 @@ export default function CadastroEndereco() {
                 </InputIcon>
                 {/* UF */}
                 <View className="border w-[65%] p-2 self-center border-stone-300 rounded-lg bg-stone-200">
-                    <Picker selectedValue={uf} onValueChange={(value, index)=>setUf(value)}>
-                        <Picker.Item label="UF" />
-                    </Picker>
+                    <View className="border p-2 self-center border-stone-300 rounded-lg bg-stone-200">
+                        <Picker
+                            className="p-1.5 flex flex-row bg-stone-200 border border-stone-300 rounded-lg gap-1.5"
+                            selectedValue={uf}
+                            onValueChange={(itemValue) => setUf(itemValue)}
+                            >
+                            <Picker.Item label="Estado (UF)" value="" />
+                            {ufs.map((uf) => (
+                                <Picker.Item key={uf.id} label={`${uf.nome} (${uf.sigla})`} value={uf.sigla} />
+                            ))}
+                        </Picker>
+                    </View>
                 </View>
-            </View>
             {/* PROXIMO */}
             <View className="items-center">
                 <Pressable onPress={()=>coletarDados()} className=" p-2 bg-emerald-700 rounded-full">
                     <Feather name="arrow-right" size={24} color="white" />
                 </Pressable>
+            </View>
             </View>
         </View>
     )

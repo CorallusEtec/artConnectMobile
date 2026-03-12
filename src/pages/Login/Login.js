@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
@@ -6,6 +6,7 @@ import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
+import Logo from "../../components/Logo";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -26,9 +27,11 @@ export default function Login() {
   return (
     <View style={{ flex: 1, backgroundColor: "#04CBAC" }}>
       {/*IMAGEM DE FUNDO*/}
-      <View style={{ flex: 0.15, backgroundColor: "#04CBAC" }}></View>
+      <View className="flex items-center" style={{ backgroundColor: "#04CBAC" }}>
+        <Logo height={200} width={300} />
+      </View>
 
-      <View className="bg-white rounded-t-xl" style={{ flex: 0.9 }}>
+      <View className="bg-white rounded-t-xl" style={{ flex: 1 }}>
         {/*TÍTULO*/}
         <View className="items-center">
           <Text className="text-5xl text-gray-600">Login</Text>

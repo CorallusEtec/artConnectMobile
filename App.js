@@ -25,7 +25,6 @@ export default function App() {
           <Stack.Screen name="CadastroEndereco" component={CadastroEndereco} options={{headerShown: false}} />
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
           <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{headerShown: false}} />
-          <Stack.Screen name="SeuPerfil" component={SeuPerfil} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
   );
