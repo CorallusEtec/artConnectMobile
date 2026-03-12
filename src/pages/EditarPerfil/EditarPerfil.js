@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import {Picker} from '@react-native-picker/picker';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
@@ -68,7 +69,7 @@ export default function EditarPerfil() {
 
             {/*HEADER*/}
             <View className="flex-row items-center ml-5" style={{ flex: 0.11, maxHeight: "100%", maxWidth: "100%", backgroundColor: "#04CBAC" }}>
-                <AntDesign name="arrow-left" size={24} color="white" />
+                <Pressable onPress={navigation.goBack}><AntDesign name="arrow-left" size={24} color="white" /></Pressable>
                 <Text className="text-2xl text-gray-100 m-4">
                     Editar Perfil
                 </Text>
@@ -103,20 +104,45 @@ export default function EditarPerfil() {
                         value={nome}
                         onChangeText={setNome}
                     />
-                </View>
+                </View >
 
-                <Text className="font-semibold text-2xl ml-4 m-3">Telefones</Text>
-                <View className="items-center">
-                    <Text className="text-gray-500 text-2xl">Nenhum telefone adicionado</Text>
-                </View>
-                
-                {/* TELEFONE */}
-                <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
-                    <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
-                    <TextInput
-                        className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                        placeholder="Adicionar Telefone"
-                    />
+                <View className="my-6">
+                    <Text className=" font-semibold text-2xl"> Contatos </Text>
+                    <View>
+                        <Text className="text-xl"> Telefone(s) </Text>
+                        <View className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
+                            <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
+                            <TextInput 
+                                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
+                                placeholder="(11) 99999-9999"
+                            />
+                            <Pressable>
+                                <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
+                            </Pressable>
+                        </View>
+                            <Pressable className="flex-row justify-center items-center">
+                                <Text className="text-xl text-[#04CBAC]"> Adicionar telefone </Text>
+                                <FontAwesome6 name="add" size={24} color="#04CBAC" />
+                            </Pressable>
+                    </View>
+
+                    <View>
+                        <Text className="text-xl"> Email(s) </Text>
+                        <View className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
+                            <MaterialCommunityIcons style={{margin:7}} name="email" size={25} color="#5a5a5a" />
+                            <TextInput 
+                                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
+                                placeholder="(11) 99999-9999"
+                            />
+                            <Pressable>
+                                <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
+                            </Pressable>
+                        </View>
+                            <Pressable className="flex-row justify-center items-center">
+                                <Text className="text-xl text-[#04CBAC]"> Adicionar email </Text>
+                                <FontAwesome6 name="add" size={24} color="#04CBAC" />
+                            </Pressable>
+                    </View>
                 </View>
 
                 {/* LOGRADOURO */}
@@ -178,6 +204,7 @@ export default function EditarPerfil() {
                     />
                 </View>
 
+                {/* UF */}
                 <View className="items-center">
                     <Picker
                         className="w-[60%] p-1.5 text-xl bg-gray-200 border-gray-300 border-2 rounded-lg text-gray-500"

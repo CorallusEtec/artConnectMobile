@@ -7,7 +7,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
-import { useEffect, useState } from "react";
 import useStore from "../../store";
 import ArtistaModel from "../../models/ArtistaModel";
 export default function CadastroEndereco() {
