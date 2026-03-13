@@ -52,7 +52,7 @@ export default class ArtistaService {
 
             const user = JSON.parse(userString);
             const id = user.id;
-            const response = await fetch(`${config.apiUrl}/artista/alterar`, {
+            const response = await fetch(`${config.apiUrl}/artista/alterar/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
