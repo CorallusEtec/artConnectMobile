@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, Modal } from "react-native";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ArtistaService from "../../services/ArtistaService";
@@ -21,6 +22,7 @@ export default function EditarPerfil() {
     const [selectedUf, setSelectedUf] = useState();
 
     const [nome, setNome] = useState("");
+    const [telefone, setTelefone] = useState("");
     const [logradouro, setLogradouro] = useState("");
     const [complemento, setComplemento] = useState("");
     const [cep, setCep] = useState("");
@@ -62,6 +64,14 @@ export default function EditarPerfil() {
                 setCidade(usuario.cidade || "");
             }
         }, [usuario]);
+
+        const [modal, setModal] = useState (false);
+        const abrirModal = () =>{
+            setModal(true)
+        }
+        const fecharModal = () =>{
+            setModal(false)
+        }
 
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "#04CBAC" }}>
@@ -120,7 +130,7 @@ export default function EditarPerfil() {
                                 <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
                             </Pressable>
                         </View>
-                            <Pressable className="flex-row justify-center items-center">
+                            <Pressable className="flex-row justify-center items-center" onPress={abrirModal}>
                                 <Text className="text-xl text-[#04CBAC]"> Adicionar telefone </Text>
                                 <FontAwesome6 name="add" size={24} color="#04CBAC" />
                             </Pressable>
@@ -227,9 +237,42 @@ export default function EditarPerfil() {
                     <Text className="text-2xl text-white text-center">Salvar<Feather name="save" size={24} color="white" /></Text>
                     </Pressable>
                 </View>
-
-
             </View>
+
+            <Modal
+            visible={modal}
+            transparent={true}>
+                <View className="flex-1 justify-center items-center bg-black/50">
+                    <View className="bg-white rounded-3xl items-center w-[90%]">
+                        <View className="flex-row">
+                            <Pressable onPress={fecharModal}>
+                            <Ionicons className="m-3" name="close" size={25} color="gray" />
+                            </Pressable>
+                            <View className="flex-col items-center justify-center">
+                                <Text className="text-2xl m-3 mr-14">Adicionar telefone</Text>
+                                <View className="w-4/4 flex-row items-center justify-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
+                                <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
+                                    <TextInput
+                                    className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
+                                    placeholder="digite o telefone"
+                                    value={telefone}
+                                    onChangeText={setTelefone}
+                                    />
+                                </View>
+                                <View className="items-center">
+                                    <Pressable style={{backgroundColor: "#04CBAC"}} 
+                                    className="m-3 rounded-lg bg-emerald-500 p-2 w-4/4"
+                                    >
+                                    <Text className="text-2xl text-white text-center">Salvar<Feather name="save" size={24} color="white" /></Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                            
+                        </View>
+                            
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
