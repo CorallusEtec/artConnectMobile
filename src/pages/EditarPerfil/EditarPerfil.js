@@ -20,68 +20,83 @@ export default function EditarPerfil() {
     const alter = useStore((state) => state.alter);
     const [isChecked, setChecked] = useState(false);
     const [selectedUf, setSelectedUf] = useState();
-    const [contatos, setContatos] = useState([]);
-
-    const [nome, setNome] = useState("");
-    const [telefone, setTelefone] = useState("");
-    const [logradouro, setLogradouro] = useState("");
-    const [complemento, setComplemento] = useState("");
-    const [cep, setCep] = useState("");
-    const [bairro, setBairro] = useState("");
-    const [cidade, setCidade] = useState("");
-
-    const [modalTipo, setModalTipo] = useState("");
-    const [tipoContato, setTipoContato] = useState("");
-    const [modalIcon, setModalIcon] = useState(null);
-    const [contatoValor, setContatoValor] = useState("");
-
-    //esse aqui separa os contatos por tipo
-    const telefones = contatos.filter(c => c.idTipoContato === 2);
-    const emails = contatos.filter(c => c.idTipoContato === 1);
-
-    async function carregarContatos() {
-        try {
-            const data = await ArtistaService.buscarContato();
-            setContatos(data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async function deletarContato(id) {
-        try {
-
-            await ArtistaService.deletarContato(id);
-            await carregarContatos();
-
-        } catch (error) {
-            console.error("Erro ao deletar contato", error);
-        }
-    }
-
-    async function salvar() {
-        try{
-        const dadosUsuario = {
-            nome,
-            bairro,
-            cep,
-            complemento,
-            nomeLog: logradouro,
-            cidade
+        const [contatos, setContatos] = useState([]);
+    
+        const [nome, setNome] = useState("");
+        const [telefone, setTelefone] = useState("");
+        const [logradouro, setLogradouro] = useState("");
+        const [complemento, setComplemento] = useState("");
+        const [cep, setCep] = useState("");
+        const [bairro, setBairro] = useState("");
+        const [cidade, setCidade] = useState("");
+    
+        const [modalTipo, setModalTipo] = useState("");
+        const [tipoContato, setTipoContato] = useState("");
+        const [modalIcon, setModalIcon] = useState(null);
+        const [contatoValor, setContatoValor] = useState("");
+    
+        //esse aqui separa os contatos por tipo
+        const telefones = contatos.filter(c => c.idTipoContato === 2);
+        const emails = contatos.filter(c => c.idTipoContato === 1);
+    
+        const handleContatoChange = (id, valor) => {
+            setContatos(contatos.map(c => c.idContatoArtista === id ? { ...c, valorContatoArtista: valor } : c));
         };
-        await ArtistaService.alterarUsuario(dadosUsuario);
-
-        const userAtualizado = {
-            ...usuario,
-            ...dadosUsuario
-        };
-        alter(userAtualizado);
-        await ArtistaService.saveUserLocal(userAtualizado);
-        navigation.goBack();
-        } catch (error) {
-            console.error(error);
+    
+        async function carregarContatos() {
+            try {
+                const data = await ArtistaService.buscarContato();
+                setContatos(data);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    } 
+    
+        async function deletarContato(id) {
+            try {
+    
+                await ArtistaService.deletarContato(id);
+                await carregarContatos();
+    
+            } catch (error) {
+                console.error("Erro ao deletar contato", error);
+            }
+        }
+    
+        async function salvar() {
+            try{
+            const dadosUsuario = {
+                nome,
+                bairro,
+                cep,
+                complemento,
+                nomeLog: logradouro,
+                cidade
+            };
+            await ArtistaService.alterarUsuario(dadosUsuario);
+    
+            // Lógica Simplificada: Salva todos os contatos toda vez.
+            // É menos eficiente (mais chamadas à API), mas o código fica mais simples.
+            for (const contato of contatos) {
+                if (contato.idContatoArtista) {
+                    await ArtistaService.alterarContato(contato.idContatoArtista, {
+                        valorContatoArtista: contato.valorContatoArtista,
+                        idTipoContato: contato.idTipoContato
+                    });
+                }
+            }
+    
+            const userAtualizado = {
+                ...usuario,
+                ...dadosUsuario
+            };
+            alter(userAtualizado);
+            await ArtistaService.saveUserLocal(userAtualizado);
+            navigation.goBack();
+            } catch (error) {
+                console.error(error);
+            }
+        } 
 
         // CARREGA VALOR NOS INPUTS
         useEffect(() => {
@@ -193,6 +208,7 @@ export default function EditarPerfil() {
                                 <TextInput 
                                 className="w-[80%] outline-none text-xl text-gray-500"
                                 value={contato.valorContatoArtista}
+                                onChangeText={(valor) => handleContatoChange(contato.idContatoArtista, valor)}
                                 />
                                 <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
                                     <FontAwesome style={{margin:7,}} name="trash-o" size={24} color="red" />
@@ -217,6 +233,7 @@ export default function EditarPerfil() {
                                 <TextInput 
                                 className="w-[80%] outline-none text-xl text-gray-500"
                                 value={contato.valorContatoArtista}
+                                onChangeText={(valor) => handleContatoChange(contato.idContatoArtista, valor)}
                                 />
 
                                 <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
