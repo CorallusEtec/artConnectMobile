@@ -79,7 +79,6 @@ export default class ArtistaService {
         return data
     } catch(error) {
         console.error("Erro ao alterar usuario:",error);
-        throw error;
     }
     }
 
@@ -112,4 +111,40 @@ static async criarContato(id, contatoData) {
 }
 
 }
+
+static async buscarContato() {
+    try {
+
+        const userString = await AsyncStorage.getItem('@login');
+        const user = JSON.parse(userString);
+        const userId = user.id;
+        const response = await fetch(`${config.apiUrl}/artista/${userId}/todos`);
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar contatos");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Erro ao buscar contatos:", error);
+        throw error;
+    }
+}
+
+static async deletarContato(id) {
+    try {
+        const response = await fetch(`${config.apiUrl}/artista/deletar-contato/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Erro ao deletar contato");
+        }
+        return await response.text();
+    } catch (error) {
+        console.error("Erro ao deletar contato", error);
+    }
+}
+
 }

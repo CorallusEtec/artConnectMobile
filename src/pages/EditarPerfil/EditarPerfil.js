@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image, Modal } from "react-native";
+import { View, Text, Pressable, Image, Modal, Alert } from "react-native";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -13,7 +13,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
-import { ScrollView } from "react-native-web";
 
 export default function EditarPerfil() {
     const navigation = useNavigation();
@@ -21,6 +20,7 @@ export default function EditarPerfil() {
     const alter = useStore((state) => state.alter);
     const [isChecked, setChecked] = useState(false);
     const [selectedUf, setSelectedUf] = useState();
+    const [contatos, setContatos] = useState([]);
 
     const [nome, setNome] = useState("");
     const [telefone, setTelefone] = useState("");
@@ -34,6 +34,30 @@ export default function EditarPerfil() {
     const [tipoContato, setTipoContato] = useState("");
     const [modalIcon, setModalIcon] = useState(null);
     const [contatoValor, setContatoValor] = useState("");
+
+    //esse aqui separa os contatos por tipo
+    const telefones = contatos.filter(c => c.idTipoContato === 2);
+    const emails = contatos.filter(c => c.idTipoContato === 1);
+
+    async function carregarContatos() {
+        try {
+            const data = await ArtistaService.buscarContato();
+            setContatos(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deletarContato(id) {
+        try {
+
+            await ArtistaService.deletarContato(id);
+            await carregarContatos();
+
+        } catch (error) {
+            console.error("Erro ao deletar contato", error);
+        }
+    }
 
     async function salvar() {
         try{
@@ -68,6 +92,8 @@ export default function EditarPerfil() {
                 setCep(usuario.cep || "");
                 setBairro(usuario.bairro || "");
                 setCidade(usuario.cidade || "");
+
+                carregarContatos();
             }
         }, [usuario]);
 
@@ -104,6 +130,7 @@ export default function EditarPerfil() {
         };
 
         await ArtistaService.criarContato(usuario.id, contatoData);
+        await carregarContatos();
         fecharModal();
     } catch (error) {
         console.error(error);
@@ -157,16 +184,21 @@ export default function EditarPerfil() {
                     <Text className=" font-semibold text-2xl"> Contatos </Text>
                     <View>
                         <Text className="text-xl"> Telefone(s) </Text>
-                        <View className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
-                            <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
-                            <TextInput 
-                                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                                placeholder="(11) 99999-9999"
-                            />
-                            <Pressable>
-                                <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
-                            </Pressable>
-                        </View>
+                        {telefones.map((contato) => (
+                            <View 
+                            key={contato.idContatoArtista}
+                            className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2"
+                            >
+                                <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
+                                <TextInput 
+                                className="w-[80%] outline-none text-xl text-gray-500"
+                                value={contato.valorContatoArtista}
+                                />
+                                <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
+                                    <FontAwesome style={{margin:7,}} name="trash-o" size={24} color="red" />
+                                </Pressable>
+                            </View>
+                        ))}
                             <Pressable className="flex-row justify-center items-center" onPress={abrirModalTelefone}>
                                 <Text className="text-xl text-[#04CBAC]"> Adicionar telefone </Text>
                                 <FontAwesome6 name="add" size={24} color="#04CBAC" />
@@ -175,16 +207,23 @@ export default function EditarPerfil() {
 
                     <View>
                         <Text className="text-xl"> Email(s) </Text>
-                        <View className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
-                            {<MaterialCommunityIcons style={{margin:7}} name="email" size={25} color="#5a5a5a" />}
-                            <TextInput 
-                                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                                placeholder="(11) 99999-9999"
-                            />
-                            <Pressable>
-                                <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
-                            </Pressable>
-                        </View>
+                        {emails.map((contato) => (
+                            <View 
+                            key={contato.idContatoArtista}
+                            className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2"
+                            >
+                                <MaterialCommunityIcons style={{margin:7}} name="email" size={25} color="#5a5a5a" />
+
+                                <TextInput 
+                                className="w-[80%] outline-none text-xl text-gray-500"
+                                value={contato.valorContatoArtista}
+                                />
+
+                                <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
+                                    <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
+                                </Pressable>
+                            </View>
+                        ))}
                             <Pressable className="flex-row justify-center items-center" onPress={abrirModalEmail}>
                                 <Text className="text-xl text-[#04CBAC]"> Adicionar email </Text>
                                 <FontAwesome6 name="add" size={24} color="#04CBAC" />
