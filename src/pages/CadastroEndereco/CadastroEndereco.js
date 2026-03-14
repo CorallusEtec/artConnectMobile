@@ -1,5 +1,4 @@
 import { View, Text, Pressable, TextInput, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import globalStyles from "../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
