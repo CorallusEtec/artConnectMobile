@@ -13,6 +13,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
+import { ScrollView } from "react-native-web";
 
 export default function EditarPerfil() {
     const navigation = useNavigation();
@@ -28,6 +29,11 @@ export default function EditarPerfil() {
     const [cep, setCep] = useState("");
     const [bairro, setBairro] = useState("");
     const [cidade, setCidade] = useState("");
+
+    const [modalTipo, setModalTipo] = useState("");
+    const [tipoContato, setTipoContato] = useState("");
+    const [modalIcon, setModalIcon] = useState(null);
+    const [contatoValor, setContatoValor] = useState("");
 
     async function salvar() {
         try{
@@ -65,13 +71,44 @@ export default function EditarPerfil() {
             }
         }, [usuario]);
 
+        // MODAL
         const [modal, setModal] = useState (false);
-        const abrirModal = () =>{
-            setModal(true)
+        const abrirModalTelefone = () => {
+            setModalTipo("Telefone");
+            setModalIcon(<MaterialCommunityIcons name="phone-plus-outline" size={25} color="#5a5a5a" />);
+            setContatoValor("");
+            setTipoContato(2);
+            setModal(true);
         }
-        const fecharModal = () =>{
-            setModal(false)
+
+        const abrirModalEmail = () => {
+            setModalTipo("Email");
+            setModalIcon(<MaterialCommunityIcons name="email" size={25} color="#5a5a5a" />);
+            setContatoValor("");
+            setTipoContato(1);
+            setModal(true);
         }
+
+        const fecharModal = () => {
+            setModal(false);
+            setContatoValor("");
+        }
+
+        // CONTATO
+        async function salvarContato() {
+
+    try {
+        const contatoData = {
+            idTipoContato: tipoContato,
+            valorContatoArtista: contatoValor,
+        };
+
+        await ArtistaService.criarContato(usuario.id, contatoData);
+        fecharModal();
+    } catch (error) {
+        console.error(error);
+    }
+}
 
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "#04CBAC" }}>
@@ -130,7 +167,7 @@ export default function EditarPerfil() {
                                 <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
                             </Pressable>
                         </View>
-                            <Pressable className="flex-row justify-center items-center" onPress={abrirModal}>
+                            <Pressable className="flex-row justify-center items-center" onPress={abrirModalTelefone}>
                                 <Text className="text-xl text-[#04CBAC]"> Adicionar telefone </Text>
                                 <FontAwesome6 name="add" size={24} color="#04CBAC" />
                             </Pressable>
@@ -139,7 +176,7 @@ export default function EditarPerfil() {
                     <View>
                         <Text className="text-xl"> Email(s) </Text>
                         <View className="flex flex-row justify-between items-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
-                            <MaterialCommunityIcons style={{margin:7}} name="email" size={25} color="#5a5a5a" />
+                            {<MaterialCommunityIcons style={{margin:7}} name="email" size={25} color="#5a5a5a" />}
                             <TextInput 
                                 className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
                                 placeholder="(11) 99999-9999"
@@ -148,7 +185,7 @@ export default function EditarPerfil() {
                                 <FontAwesome style={{margin:7}} name="trash-o" size={24} color="red" />
                             </Pressable>
                         </View>
-                            <Pressable className="flex-row justify-center items-center">
+                            <Pressable className="flex-row justify-center items-center" onPress={abrirModalEmail}>
                                 <Text className="text-xl text-[#04CBAC]"> Adicionar email </Text>
                                 <FontAwesome6 name="add" size={24} color="#04CBAC" />
                             </Pressable>
@@ -241,29 +278,31 @@ export default function EditarPerfil() {
 
             <Modal
             visible={modal}
-            transparent={true}>
+            transparent={true}
+            animationType="fade">
                 <View className="flex-1 justify-center items-center bg-black/50">
-                    <View className="bg-white rounded-3xl items-center w-[90%]">
+                    <View className="bg-white rounded-3xl w-[90%] pt-5">
                         <View className="flex-row">
                             <Pressable onPress={fecharModal}>
                             <Ionicons className="m-3" name="close" size={25} color="gray" />
                             </Pressable>
                             <View className="flex-col items-center justify-center">
-                                <Text className="text-2xl m-3 mr-14">Adicionar telefone</Text>
+                                <Text className="text-2xl m-3 mr-14">Adicionar {modalTipo}</Text>
                                 <View className="w-4/4 flex-row items-center justify-center bg-gray-200 border-gray-300 border-2 rounded-lg m-3 gap-2">
-                                <MaterialCommunityIcons style={{margin:7}} name="phone-plus-outline" size={25} color="#5a5a5a" />
+                                {modalIcon}
                                     <TextInput
                                     className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
-                                    placeholder="digite o telefone"
-                                    value={telefone}
-                                    onChangeText={setTelefone}
+                                    placeholder={`digite o ${modalTipo.toLowerCase()}`}
+                                    value={contatoValor}
+                                    onChangeText={setContatoValor}
                                     />
                                 </View>
                                 <View className="items-center">
                                     <Pressable style={{backgroundColor: "#04CBAC"}} 
                                     className="m-3 rounded-lg bg-emerald-500 p-2 w-4/4"
+                                    onPress={salvarContato}
                                     >
-                                    <Text className="text-2xl text-white text-center">Salvar<Feather name="save" size={24} color="white" /></Text>
+                                    <Text className="text-2xl text-white text-center">Salvar <Feather name="save" size={24} color="white" /></Text>
                                     </Pressable>
                                 </View>
                             </View>
