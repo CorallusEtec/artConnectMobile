@@ -12,6 +12,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import ArtistaService from "../../services/ArtistaService";
+import ContatoArtistaService from "../../services/ContatoArtistaService";
 import useStore from "../../store";
 
 export default function EditarPerfil() {
@@ -23,7 +24,6 @@ export default function EditarPerfil() {
         const [contatos, setContatos] = useState([]);
     
         const [nome, setNome] = useState("");
-        const [telefone, setTelefone] = useState("");
         const [logradouro, setLogradouro] = useState("");
         const [complemento, setComplemento] = useState("");
         const [cep, setCep] = useState("");
@@ -39,13 +39,13 @@ export default function EditarPerfil() {
         const telefones = contatos.filter(c => c.idTipoContato === 2);
         const emails = contatos.filter(c => c.idTipoContato === 1);
     
-        const handleContatoChange = (id, valor) => {
+        const atualizarValorContato = (id, valor) => {
             setContatos(contatos.map(c => c.idContatoArtista === id ? { ...c, valorContatoArtista: valor } : c));
         };
     
         async function carregarContatos() {
             try {
-                const data = await ArtistaService.buscarContato();
+                const data = await ContatoArtistaService.buscarContato();
                 setContatos(data);
             } catch (error) {
                 console.error(error);
@@ -55,7 +55,7 @@ export default function EditarPerfil() {
         async function deletarContato(id) {
             try {
     
-                await ArtistaService.deletarContato(id);
+                await ContatoArtistaService.deletarContato(id);
                 await carregarContatos();
     
             } catch (error) {
@@ -75,11 +75,9 @@ export default function EditarPerfil() {
             };
             await ArtistaService.alterarUsuario(dadosUsuario);
     
-            // Lógica Simplificada: Salva todos os contatos toda vez.
-            // É menos eficiente (mais chamadas à API), mas o código fica mais simples.
             for (const contato of contatos) {
                 if (contato.idContatoArtista) {
-                    await ArtistaService.alterarContato(contato.idContatoArtista, {
+                    await ContatoArtistaService.alterarContato(contato.idContatoArtista, {
                         valorContatoArtista: contato.valorContatoArtista,
                         idTipoContato: contato.idTipoContato
                     });
@@ -144,7 +142,7 @@ export default function EditarPerfil() {
             valorContatoArtista: contatoValor,
         };
 
-        await ArtistaService.criarContato(usuario.id, contatoData);
+        await ContatoArtistaService.criarContato(usuario.id, contatoData);
         await carregarContatos();
         fecharModal();
     } catch (error) {
@@ -208,7 +206,7 @@ export default function EditarPerfil() {
                                 <TextInput 
                                 className="w-[80%] outline-none text-xl text-gray-500"
                                 value={contato.valorContatoArtista}
-                                onChangeText={(valor) => handleContatoChange(contato.idContatoArtista, valor)}
+                                onChangeText={(valor) => atualizarValorContato(contato.idContatoArtista, valor)}
                                 />
                                 <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
                                     <FontAwesome style={{margin:7,}} name="trash-o" size={24} color="red" />
@@ -233,7 +231,7 @@ export default function EditarPerfil() {
                                 <TextInput 
                                 className="w-[80%] outline-none text-xl text-gray-500"
                                 value={contato.valorContatoArtista}
-                                onChangeText={(valor) => handleContatoChange(contato.idContatoArtista, valor)}
+                                onChangeText={(valor) => atualizarValorContato(contato.idContatoArtista, valor)}
                                 />
 
                                 <Pressable onPress={() => deletarContato(contato.idContatoArtista)}>
