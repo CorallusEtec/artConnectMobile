@@ -8,10 +8,6 @@ import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
 import Logo from "../../components/Logo";
 
-{
-  /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
-}
-
 export default function Login() {
   const navigation = useNavigation();
   const [isChecked, setChecked] = useState(false);
@@ -19,8 +15,6 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const alterStateUsuario = useStore(state=>state.alter)
   
-
-
   async function logar() {
     const data = await ArtistaService.login(email, senha);
     await ArtistaService.saveUserLocal(data);
