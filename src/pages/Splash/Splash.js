@@ -11,7 +11,6 @@ export default function Splash() {
     const setLocalUser = useStore(state=> state.alter)
     {/* ENQUANTO NÃO TEM VALIDAÇÃO DE LOGIN, SIMULAÇÃO DE CARREGAR */}
     async function load() {
-        console.log("Rodando")
         const user = await ArtistaService.getUserLocal();
         if(user != null) {
             setLocalUser(user);

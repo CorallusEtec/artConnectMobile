@@ -1,8 +1,10 @@
 import { View, Text, TextInput, Pressable } from "react-native";
+import MaskInput, { Masks } from 'react-native-mask-input';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputSenha from "../../components/InputSenha";
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
+import ArtistaModel from '../../models/ArtistaModel';
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -18,16 +20,35 @@ export default function Cadastro() {
     setMostrarData(false);
     setDataNasc(data);
   }
-  const [mostrarData, setMostrarData] = useState(false);
+  const [artista, setArtista] = useState(new ArtistaModel(null));
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [cpf, setCpf] = useState("");
   const [sexo, setSexo] = useState('M');
-  const [dataNasc, setDataNasc] = useState(new Date(2007, 4, 20));
+
+  const [mostrarData, setMostrarData] = useState(false);
+  const [dataNasc, setDataNasc] = useState(new Date(2000, 0, 1));
 
   const alterStateUsuario = useStore(store=>store.alter)
+
+  function handleUsuario(valor, campo) {
+    switch (campo) {
+      case 'dataNasc':
+        setArtista(valor=>({
+          ...valor,
+          [campo]: valor.toISOString().split('T')[0]
+        }));
+        break;
+      default:
+      setArtista(valor=>({
+        ...valor,
+        [campo]: valor
+      }));
+      break;
+    }
+  }
 
   function coletarDados() {
     const cadastro = {
@@ -38,7 +59,7 @@ export default function Cadastro() {
       dataNasc: dataNasc.toISOString().split("T")[0],
       sexo: sexo
     }
-    alterStateUsuario(cadastro);
+    alterStateUsuario(artista);
     navigation.navigate("CadastroEndereco");
   }
 
@@ -53,6 +74,7 @@ export default function Cadastro() {
       </View>
       {/*FORM*/}
       <View style={{ flex: 0.6 }} className="gap-2">
+        {/* CAMPOS */}
         <View className="gap-2 mb-5">
           {/*Nome*/}
           <InputIcon>
@@ -62,9 +84,9 @@ export default function Cadastro() {
               color={globalStyles.icone.corIcones}
             />
             <TextInput
-              value={nome}
+              value={artista.nome}
+              onChangeText={(e)=>handleUsuario(e, 'nome')}
               keyboardType="default"
-              onChangeText={setNome}
               className="w-[90%] text-xl outline-none font-normal"
               placeholder="Nome Completo"
             />
@@ -77,17 +99,17 @@ export default function Cadastro() {
               color={globalStyles.icone.corIcones}
             />
             <TextInput
-              value={email}
-              onChangeText={setEmail}
+              value={artista.email}
+              onChangeText={(e)=>handleUsuario(e, 'email')}
               keyboardType="email-address"
               className="w-[90%] text-xl outline-none font-normal"
               placeholder="E-mail"
             />
           </InputIcon>
           {/*Senha*/}
-          <InputSenha value={senha} setValue={setSenha} />
+          <InputSenha value={artista.senha} setValue={(e)=>handleUsuario(e, artista.senha)} placeholder={"Crie uma senha"}/>
           {/*Confirmar Senha*/}
-          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} />
+          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} placeholder={"Confirme a senha"}/>
           {/*CPF*/}
           <InputIcon>
             <Feather
@@ -95,20 +117,19 @@ export default function Cadastro() {
               size={globalStyles.icone.size}
               color={globalStyles.icone.corIcones}
             />
-            <TextInput
+            <MaskInput
+              mask={Masks.BRL_CPF}
               keyboardType="numeric"
-              value={cpf}
-              onChangeText={setCpf}
+              maxLength={14}
               className="w-[90%] text-xl outline-none font-normal"
-              placeholder="CPF"
-            />
+              placeholder="CPF" />
           </InputIcon>
         </View>
         {/* DATA E SEXO */}
         <View className="flex flex-row justify-between mb-7">
           {/*DATA NASC*/}
           <View>
-            <Text className="font-medium text-lg">Data de Nascimento</Text>
+            <Text className="font-normal text-stone-800 text-lg">Data de Nascimento</Text>
             <Pressable
               onPress={selectDate}
               className="p-4 flex flex-row justify-between items-center border border-stone-300 rounded-lg bg-stone-200"
@@ -135,7 +156,7 @@ export default function Cadastro() {
           </View>
           {/*SEXO*/}
           <View className="flex">
-            <Text className="font-medium text-lg">Sexo</Text>
+            <Text className="font-normal text-stone-800 text-lg">Sexo</Text>
             <View className="border border-stone-300 rounded-lg bg-stone-200">
               <Picker
                 style={{
@@ -149,11 +170,9 @@ export default function Cadastro() {
                 onValueChange={(itemValue) => setSexo(itemValue)}
               >
                 <Picker.Item value="m" label="Masculino" />
-                <Picker.Item
-                  value="f"
-                  label="Feminino"
-                  className="text-black"
-                />
+                <Picker.Item value="f" label="Feminino"/>
+                <Picker.Item value="n" label="Não-Binário"/>
+                <Picker.Item value="" label="Prefiro não dizer"/>
               </Picker>
             </View>
           </View>
@@ -164,7 +183,7 @@ export default function Cadastro() {
             <Text className="text-lg font-light">Ja tem uma conta? </Text>
             <Text className="text-lg font-normal text-emerald-600">Faça Login</Text>
           </Pressable>
-          <Pressable className="bg-teal-700 p-2 rounded-full" onPress={()=>coletarDados()}>
+          <Pressable className="bg-teal-700 p-2 rounded-full">
             <Feather
               name="arrow-right"
               size={globalStyles.icone.size}
