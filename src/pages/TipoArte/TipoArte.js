@@ -1,19 +1,51 @@
-import { View, Text, Pressable } from "react-native";
-import { TextInput } from "react-native-web";
+import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Feather from "@expo/vector-icons/Feather";
-import { Checkbox } from "expo-checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
-
-{
-  /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
-}
+import useStore from "../../store";
+import ArteService from "../../services/ArteService";
+import ArtistaModel from "../../models/ArtistaModel";
+import ArtistaService from "../../services/ArtistaService";
 
 export default function TipoArte() {
+
+  const usuario = useStore(store=>store.usuario);
+  const saveStateUsuario = useStore(store=>store.alter);
   const navigation = useNavigation();
-  const [isChecked, setChecked] = useState(false);
-  const [selectedArt, setSelectedArt] = useState();
+  const [selectedArt, setSelectedArt] = useState(1);
+  
+  const [listaArte, setListaArte] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(()=> {
+    async function carregarArte() {
+      try {
+        const dados = await ArteService.findAll();
+        console.log(dados);
+        setListaArte(dados);
+      } catch (erro) {
+        console.error(erro);
+      } finally {
+        setCarregando(false);
+      }
+    }
+    carregarArte();
+  }, [])
+
+  function criarConta() {
+    usuario.idArte = selectedArt;
+    const artista = new ArtistaModel(usuario);
+    saveArtista(artista);
+    navigation.navigate("Home");
+  }
+  async function saveArtista(artista) {
+    console.log(JSON.stringify(artista));
+    await ArtistaService.save(artista);
+    await ArtistaService.saveUserLocal(artista);
+    saveStateUsuario(artista);
+  }
+
+  if(carregando) return <ActivityIndicator size="large" />
 
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
@@ -27,7 +59,7 @@ export default function TipoArte() {
       >
         <View className="items-center mb-2 mt-10">
           <Text className="text-5xl font-light text-gray-500 m-2.5">
-            Olá Fulano
+            Olá {usuario.nome}
           </Text>
 
           <View className="items-center">
@@ -57,10 +89,9 @@ export default function TipoArte() {
                     setSelectedArt(itemValue)
                 }
                 >
-                <Picker.Item label="Pintura" value="Pintura" />
-                <Picker.Item label="Teatro" value="Teatro" />
-                <Picker.Item label="Música" value="Música" />
-                <Picker.Item label="Literatura" value="Literatura" />
+                  {listaArte.map(arte=> (
+                    <Picker.Item key={arte.id} label={arte.nomeArte} value={arte.id} />
+                  ))}
                 </Picker>
                 </View>
             </View>
@@ -69,7 +100,7 @@ export default function TipoArte() {
         {/*CRIAR CONTA*/}
         <View className="items-center">
           <Pressable
-            onPress={()=>navigation.navigate("Home")}
+            onPress={()=>criarConta()}
             style={{ backgroundColor: "#04CBAC" }}
             className="rounded-lg bg-emerald-500 p-3 w-2/4"
           >

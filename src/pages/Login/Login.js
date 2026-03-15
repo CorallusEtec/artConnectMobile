@@ -2,17 +2,26 @@ import { View, Text, Pressable, TextInput, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import { Checkbox } from "expo-checkbox";
+import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
-import InputSenha from "../../components/InputSenha";
+import ArtistaService from "../../services/ArtistaService";
+import useStore from "../../store";
 import Logo from "../../components/Logo";
-
-{
-  /*SE VOCê ESTÁ LENDO ISSO, O COMMIT DEU CERTO!*/
-}
+import InputIcon from "../../components/InputIcon";
 
 export default function Login() {
   const navigation = useNavigation();
   const [isChecked, setChecked] = useState(false);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const alterStateUsuario = useStore(state=>state.alter)
+  
+  async function logar() {
+    const data = await ArtistaService.login(email, senha);
+    await ArtistaService.saveUserLocal(data);
+    alterStateUsuario(data);
+    navigation.navigate("Home");
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: "#04CBAC" }}>
@@ -36,21 +45,23 @@ export default function Login() {
           {/* CAMPOS  */}
           <View className="gap-2">
             {/*E-MAIL*/}
-            <View className="flex-row items-center bg-gray-200 border-gray-300 border-2 rounded-lg gap-2">
+            <InputIcon className="flex-row items-center bg-stone-200 border-stone-300 border-2 rounded-lg gap-2">
               <Feather
-                style={{ margin: 7 }}
+
                 name="mail"
                 size={25}
                 color="#5a5a5a"
               />
               <TextInput
-                className="w-[90%] outline-none text-xl text-gray-500 placeholder:text-gray-500"
+                className="outline-none w-[90%] text-xl"
                 placeholder="E-mail"
+                value={email}
+                onChangeText={setEmail}
               />
-            </View>
+            </InputIcon>
 
             {/*SENHA*/}
-              <InputSenha  />
+            <InputSenha value={senha} setValue={setSenha} />
           </View>
             {/* ESQUECI SENHA ETC  */}
           <View className="flex-row justify-between">
@@ -72,7 +83,7 @@ export default function Login() {
         <View className="gap-3 mb-8">
           {/*ENTRAR*/}
           <View className="items-center">
-            <Pressable
+            <Pressable onPress={()=>logar()}
               style={{ backgroundColor: "#04CBAC" }}
               className="rounded-lg bg-emerald-500 p-3 w-2/4"
             >

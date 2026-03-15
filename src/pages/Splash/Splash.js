@@ -1,14 +1,28 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
-import {View, Image, ActivityIndicator} from 'react-native';
+import useStore from '../../store';
+import ArtistaService from '../../services/ArtistaService';
+
+import {View, ActivityIndicator} from 'react-native';
 import Logo from '../../components/Logo';
 
 export default function Splash() {
     const navigate = useNavigation();
+    const setLocalUser = useStore(state=> state.alter)
     {/* ENQUANTO NÃO TEM VALIDAÇÃO DE LOGIN, SIMULAÇÃO DE CARREGAR */}
+    async function load() {
+        console.log("Rodando")
+        const user = await ArtistaService.getUserLocal();
+        if(user != null) {
+            setLocalUser(user);
+            navigate.navigate("Home");
+        } else {
+            navigate.navigate("Login");
+        }
+    }
     useEffect(()=>{
         setTimeout(()=>{
-            navigate.navigate("Login");
+            load();
         }, 2000);
     }, [])
     return (

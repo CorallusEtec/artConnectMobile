@@ -5,6 +5,8 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Post from "../../components/Post";
 import CompSeuPerfil from "../../components/CompSeuPerfil";
+
+import useStore from "../../store";
 import { useState } from 'react';
 
 export default function SeuPerfil() {
