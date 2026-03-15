@@ -1,5 +1,5 @@
 import { View, Text, Pressable, TextInput, ActivityIndicator } from "react-native";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import globalStyles from "../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
-import useStore from "../../store";
+
 import ArtistaModel from "../../models/ArtistaModel";
 export default function CadastroEndereco() {
 
@@ -15,16 +15,6 @@ export default function CadastroEndereco() {
     const [ufs, setUfs] = useState([]);
     const [selectedUf, setSelectedUf] = useState('');
     const [loading, setLoading] = useState(true);
-
-    const fetchUfs = async () => {
-        try {
-        const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
-        const data = await response.json();
-        setUfs(data);
-        } finally {
-        setLoading(false);
-        }
-    };
 
     useEffect(() => {
         fetchUfs();
@@ -42,9 +32,6 @@ export default function CadastroEndereco() {
         alterStateUsuario(artista);
         navigate.navigate("TipoArte");
     }
-    const [ufs, setUfs] = useState([]);
-    const [loading, setLoading] = useState(true);
-
     const fetchUfs = async () => {
         try {
         const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');

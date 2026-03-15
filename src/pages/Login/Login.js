@@ -7,6 +7,7 @@ import { useState } from "react";
 import ArtistaService from "../../services/ArtistaService";
 import useStore from "../../store";
 import Logo from "../../components/Logo";
+import InputIcon from "../../components/InputIcon";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -44,20 +45,20 @@ export default function Login() {
           {/* CAMPOS  */}
           <View className="gap-2">
             {/*E-MAIL*/}
-            <View className="flex-row items-center bg-stone-200 border-stone-300 border-2 rounded-lg gap-2">
+            <InputIcon className="flex-row items-center bg-stone-200 border-stone-300 border-2 rounded-lg gap-2">
               <Feather
-                style={{ margin: 7 }}
+
                 name="mail"
                 size={25}
                 color="#5a5a5a"
               />
               <TextInput
-                className="w-[90%] outline-none text-xl"
+                className="outline-none w-[90%] text-xl"
                 placeholder="E-mail"
                 value={email}
                 onChangeText={setEmail}
               />
-            </View>
+            </InputIcon>
 
             {/*SENHA*/}
             <InputSenha value={senha} setValue={setSenha} />

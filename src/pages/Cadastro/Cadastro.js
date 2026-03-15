@@ -65,7 +65,7 @@ export default function Cadastro() {
               value={nome}
               keyboardType="default"
               onChangeText={setNome}
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="Nome Completo"
             />
           </InputIcon>
@@ -80,7 +80,7 @@ export default function Cadastro() {
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="E-mail"
             />
           </InputIcon>
@@ -99,7 +99,7 @@ export default function Cadastro() {
               keyboardType="numeric"
               value={cpf}
               onChangeText={setCpf}
-              className="w-full text-xl outline-none font-normal"
+              className="w-[90%] text-xl outline-none font-normal"
               placeholder="CPF"
             />
           </InputIcon>
