@@ -1,4 +1,5 @@
 import { View, Text, Pressable, TextInput, ActivityIndicator } from "react-native";
+import React, { useState, useEffect } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import globalStyles from "../../globalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -6,21 +7,29 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
-import { useEffect, useState } from "react";
 import useStore from "../../store";
 import ArtistaModel from "../../models/ArtistaModel";
 export default function CadastroEndereco() {
 
     const navigate = useNavigation();
-    const [log, setLog] = useState();
-    const [comp, setComp] = useState();
-    const [cep, setCep] = useState();
-    const [bairro, setBairro] = useState();
-    const [cidade, setCidade] = useState();
-    const [uf, setUf] = useState("SP");
-    
-    const dadosCadastro = useStore(store=>store.usuario)
-    const alterStateUsuario = useStore(store=>store.alter)
+    const [ufs, setUfs] = useState([]);
+    const [selectedUf, setSelectedUf] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    const fetchUfs = async () => {
+        try {
+        const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome');
+        const data = await response.json();
+        setUfs(data);
+        } finally {
+        setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUfs();
+    }, []);
+
 
     function coletarDados() {
         dadosCadastro.nomeLog = log;
@@ -49,7 +58,7 @@ export default function CadastroEndereco() {
     useEffect(() => {
         fetchUfs();
     }, []);
-
+  
     if (loading) return <View><ActivityIndicator size="large" style={{ margin: 300 }} /></View>;
 
     return (
@@ -97,7 +106,7 @@ export default function CadastroEndereco() {
                     <TextInput value={cidade} onChangeText={setCidade} className="text-lg w-[90%] outline-none" placeholder="Cidade" />
                 </InputIcon>
                 {/* UF */}
-                <View className="border w-[65%] p-2 self-center border-stone-300 rounded-lg bg-stone-200">
+                 <View className="border w-[65%] p-2 self-center border-stone-300 rounded-lg bg-stone-200">
                     <View className="border p-2 self-center border-stone-300 rounded-lg bg-stone-200">
                         <Picker
                             className="p-1.5 flex flex-row bg-stone-200 border border-stone-300 rounded-lg gap-1.5"
@@ -108,7 +117,7 @@ export default function CadastroEndereco() {
                             {ufs.map((uf) => (
                                 <Picker.Item key={uf.id} label={`${uf.nome} (${uf.sigla})`} value={uf.sigla} />
                             ))}
-                        </Picker>
+                          </Picker>
                     </View>
                 </View>
             {/* PROXIMO */}

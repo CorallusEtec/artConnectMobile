@@ -1,5 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
+import useStore from '../../store';
+import ArtistaService from '../../services/ArtistaService';
+import {View, Image, ActivityIndicator, Text} from 'react-native';
 import {View, ActivityIndicator} from 'react-native';
 import useStore from '../../store';
 import ArtistaService from '../../services/ArtistaService';
