@@ -1,41 +1,54 @@
 import { View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
-import { Checkbox } from "expo-checkbox";
 import InputSenha from '../../components/InputSenha';
 import { useState } from "react";
-import ArtistaService from "../../services/ArtistaService";
+import { ArtistaService} from '../../services/ArtistaService'
 import useStore from "../../store";
 import Logo from "../../components/Logo";
 import InputIcon from "../../components/InputIcon";
+import { ErroValidacao } from "../../services/ErroValidacao";
 
 export default function Login() {
   const navigation = useNavigation();
-  const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const alterStateUsuario = useStore(state=>state.alter)
   
-  async function logar() {
-    const data = await ArtistaService.login(email, senha);
-    await ArtistaService.saveUserLocal(data);
-    alterStateUsuario(data);
-    navigation.navigate("Home");
+  /* FUNÇÕES E ESTADOS QUE MOSTRAM E MANIPULAM FEEDBACK DE VALIDAÇÃO */
+  let valido = new ErroValidacao();
+  const [validoVisual, setValidoVisual] = useState(valido);
+  function feedbackFade(state, tempo) {
+    setValidoVisual(state);
+    setTimeout(()=>{
+      setValidoVisual(st=>({
+        ...st,
+        valido: true
+      }))
+    }, tempo)
   }
 
-/**
- * ENTRAR SEM LOGIN (IMPLEMENTAR DEPOIS)
-  <View className="items-center">
-    <Pressable
-      style={{ backgroundColor: "#fff" }}
-      className="border-gray-300 border-2 rounded-lg bg-emerald-500 p-3 w-4/6"
-    >
-      <Text className="text-2xl text-gray-500 text-center">
-        Entrar sem Login
-      </Text>
-    </Pressable>
-  </View> 
- */
+  async function logar() {
+    valido = ArtistaService.validarLogin([email, senha])
+    feedbackFade(valido, 2500);
+    try {
+      if(valido.valido) {
+        const data = await ArtistaService.login(email, senha);
+        if(data instanceof ErroValidacao) {
+          valido = data;
+          feedbackFade(valido, 2500)
+        } else {
+          alterStateUsuario(data);
+          await ArtistaService.saveUserLocal(data);
+          navigation.navigate("Home");
+        }
+      }
+    } catch (e) {
+      
+    }
+  }
+
+
 
 
   return (
@@ -59,6 +72,7 @@ export default function Login() {
         <View className="p-3 gap-3 mb-5">
           {/* CAMPOS  */}
           <View className="gap-2">
+            {!validoVisual.valido?<Text className="text-base text-red-500">* {validoVisual.msg}</Text>:<></>}
             {/*E-MAIL*/}
             <InputIcon>
               <Feather
@@ -80,12 +94,7 @@ export default function Login() {
             {/* ESQUECI SENHA ETC  */}
           <View className="flex-row justify-between">
             <View className="flex-row items-center gap-2">
-              <Checkbox
-                value={isChecked}
-                onValueChange={setChecked}
-                color={isChecked ? "#4630EB" : undefined}
-              />
-              <Text className="font-normal text-lg">Lembre-se de Mim</Text>
+              <Text></Text>
             </View>
             <Pressable>
               <Text className="text-gray-500 text-lg">Esqueci a Senha</Text>
@@ -121,4 +130,17 @@ export default function Login() {
       </View>
     </View>
   );
+  /**
+ * ENTRAR SEM LOGIN (IMPLEMENTAR DEPOIS)
+  <View className="items-center">
+    <Pressable
+      style={{ backgroundColor: "#fff" }}
+      className="border-gray-300 border-2 rounded-lg bg-emerald-500 p-3 w-4/6"
+    >
+      <Text className="text-2xl text-gray-500 text-center">
+        Entrar sem Login
+      </Text>
+    </Pressable>
+  </View> 
+ */
 }

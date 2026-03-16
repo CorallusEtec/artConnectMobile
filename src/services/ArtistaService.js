@@ -73,6 +73,15 @@ export class ArtistaService {
         return valido;
     }
     
+    static validarLogin(campos) {
+        const valido = new ErroValidacao("");
+        for(let i=0; i<campos.length; i++) {
+            if(campos[i].trim() == "") {
+                return valido.invalido("Há Campos não preenchidos");
+            }
+        }
+        return valido;
+    }
     
     
     /*
@@ -81,12 +90,9 @@ export class ArtistaService {
     static async login(email, senha) {
         try {
             const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
-            if(data.status == 302) {
-
-            }
             return data.json();
         } catch(erro) {
-            console.error('Erro ao buscar artistas:', erro);
+            return new ErroValidacao().invalido("Não foi possivel fazer login");
         }
     }
 
