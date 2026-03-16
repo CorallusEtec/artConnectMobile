@@ -48,13 +48,11 @@ export default function CadastroEndereco() {
 
     useEffect(() => {
         try {
-            /*
             if(stateUsuario == null) {
                 navigate.navigate("Cadastro");
             } else {
                 setArtista(new ArtistaModel(stateUsuario));
             }
-            */
             fetchUfs();
 
         } finally {

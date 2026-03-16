@@ -12,6 +12,7 @@ import globalStyles from "../../globalStyles";
 import useStore from '../../store';
 import { ArtistaService } from "../../services/ArtistaService";
 import { ErroValidacao } from "../../services/ErroValidacao";
+import { SafeAreaView } from "react-native-safe-area-context";
 export default function Cadastro() {
   
   const navigation = useNavigation();
@@ -76,7 +77,7 @@ export default function Cadastro() {
   }, [])
 
   return (
-    <View className="p-3" style={{ flex: 1, flexDirection: "column" }}>
+    <SafeAreaView className="p-3" style={{ flex: 1, flexDirection: "column" }}>
       {/*TITULO E BANNER*/}
       <View style={{ flex: 0.25 }} className="items-center justify-center">
         <Text className="font-normal text-5xl text-emerald-800">Cadastro</Text>
@@ -209,6 +210,6 @@ export default function Cadastro() {
           </Pressable>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
