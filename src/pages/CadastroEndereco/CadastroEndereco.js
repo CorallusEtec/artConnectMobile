@@ -152,14 +152,14 @@ export default function CadastroEndereco() {
                 {!validoVisual.valido?<Text className="text-lg text-red-500">* {validoVisual.msg}</Text>:<></>}
                 {/* LOGRADOURO */}
                 <View className="flex flex-row gap-1">
-                    <View className="w-[70%] gap-1.5 border border-stone-300 rounded-md flex-row bg-stone-200 p-1 items-center">
+                    <View className="w-[75%] gap-1.5 border border-stone-300 rounded-md flex-row bg-stone-200 p-1 items-center">
                         <Feather name="map" size={24} color={globalStyles.paleta.corIcones} />
                         <TextInput value={artista.nomeLog}
                         onChangeText={(e)=>handleUsuario(e, 'nomeLog')}
                         className="outline-none w-[90%] text-lg"
                         placeholder="Logradouro" />
                     </View>
-                    <View className="w-[30%] gap-1.5 border border-stone-300 rounded-md flex-row bg-stone-200 p-1 items-center">
+                    <View className="w-[25%] gap-1.5 border border-stone-300 rounded-md flex-row bg-stone-200 p-1 items-center">
                         <Feather name="hash" size={24} color={globalStyles.paleta.corIcones} />
                         <TextInput value={artista.numLog}
                         maxLength={5}
