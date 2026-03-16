@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, Pressable, ActivityIndicator, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
@@ -6,6 +6,7 @@ import useStore from "../../store";
 import { ArtistaService } from "../../services/ArtistaService";
 import ArtistaModel from "../../models/ArtistaModel";
 import ArteService from "../../services/ArteService";
+import { ErroValidacao } from "../../services/ErroValidacao";
 
 export default function TipoArte() {
 
@@ -21,9 +22,13 @@ export default function TipoArte() {
   async function carregarArte() {
     try {
       const dados = await ArteService.findAll();
-      setListaArte(dados);
+      if(dados == undefined) {
+        navigation.navigate("Cadastro", new ErroValidacao().invalido("Ocorreu um erro ao prosseguir com o cadastro, tente mais tarde"));
+      } else {
+        setListaArte(dados);
+      }
     } catch (erro) {
-      console.error(erro);
+      navigation.navigate("Cadastro");
     } finally {
       setLoad(false);
     }

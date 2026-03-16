@@ -13,7 +13,7 @@ import useStore from '../../store';
 import { ArtistaService } from "../../services/ArtistaService";
 import { ErroValidacao } from "../../services/ErroValidacao";
 import { SafeAreaView } from "react-native-safe-area-context";
-export default function Cadastro() {
+export default function Cadastro({ route }) {
   
   const navigation = useNavigation();
   let valido = new ErroValidacao();
@@ -69,6 +69,9 @@ export default function Cadastro() {
   }
 
   useEffect(()=>{
+    if(route.params != undefined) {
+      refreshValido(route.params, 3000);
+    }
     if(stateUsuario == null) {
       setArtista(new ArtistaModel(null));
     } else {
