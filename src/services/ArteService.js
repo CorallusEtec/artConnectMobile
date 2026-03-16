@@ -7,7 +7,7 @@ export default class ArteService {
             const data = await fetch(`${config.apiUrl}/arte/todos`);
             return data.json();
         } catch (erro) {
-            console.error(erro);
+        
         }
     }
 }

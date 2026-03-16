@@ -91,7 +91,7 @@ export default function Cadastro({ route }) {
       {/*FORM*/}
       <ScrollView style={{ flex: 0.6 }} className="gap-2">
         {/* FEEDBACK DE ERROS */}
-        {!validoVisual.valido?<Text className="text-red-500">* {validoVisual.msg}</Text>:<></>}
+        {!validoVisual.valido?<Text className="text-center text-red-500">* {validoVisual.msg}</Text>:<></>}
         {/* CAMPOS */}
         <View className="gap-2 mb-5">
           {/*Nome*/}
