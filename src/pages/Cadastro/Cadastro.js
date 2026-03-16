@@ -1,45 +1,59 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import MaskInput, { Masks } from 'react-native-mask-input';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputSenha from "../../components/InputSenha";
 import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
+import ArtistaModel from '../../models/ArtistaModel';
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../globalStyles";
 import useStore from '../../store';
+import { ArtistaService } from "../../services/ArtistaService";
+import { ErroValidacao } from "../../services/ErroValidacao";
 export default function Cadastro() {
+  
   const navigation = useNavigation();
+  let valido = new ErroValidacao();
+  const [validoVisual, setValidoVisual] = useState(valido)
+  const [artista, setArtista] = useState(new ArtistaModel(null));
+  const [senhaConfirm, setSenhaConfirm] = useState("");
 
+  /* ALTERA O ESTADO GLOBAL */
+  const alterStateUsuario = useStore(store=>store.alter)
+
+  /* FUNÇÕES PARA O COMPONENTE DE DATA */
+  const [mostrarData, setMostrarData] = useState(false);
   function selectDate() {
     setMostrarData(true);
   }
   function onChangeData(event, data) {
     setMostrarData(false);
-    setDataNasc(data);
+    handleUsuario(data, 'dataNasc');
   }
-  const [mostrarData, setMostrarData] = useState(false);
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [senhaConfirm, setSenhaConfirm] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [sexo, setSexo] = useState('M');
-  const [dataNasc, setDataNasc] = useState(new Date(2007, 4, 20));
 
-  const alterStateUsuario = useStore(store=>store.alter)
-
-  function coletarDados() {
-    const cadastro = {
-      nome: nome,
-      email: email,
-      senha: senha,
-      cpf: cpf,
-      dataNasc: dataNasc.toISOString().split("T")[0],
-      sexo: sexo
+  /* ALTERA O STATE DO USUARIO */
+  function handleUsuario(valor, campo) {
+    switch (campo) {
+      default:
+      setArtista(dados=>({
+        ...dados,
+        [campo]: valor
+      }));
+      break;
     }
-    alterStateUsuario(cadastro);
-    navigation.navigate("CadastroEndereco");
+  }
+  /* VALIDAÇÃO DE CAMPOS E PASSAGEM PARA PRÓXIMA TELA */
+  function coletarDados() {
+    valido = ArtistaService.validarCampos(artista, senhaConfirm, ['nome', 'email', 'senha', 'cpf', 'dataNasc'])
+    if(valido.valido) {
+      artista.dataNasc = artista.dataNasc.toISOString().split('T')[0];
+      alterStateUsuario(artista);
+      navigation.navigate("CadastroEndereco");
+    } else {
+      setValidoVisual(valido);
+    }
   }
 
   return (
@@ -52,7 +66,10 @@ export default function Cadastro() {
         </Text>
       </View>
       {/*FORM*/}
-      <View style={{ flex: 0.6 }} className="gap-2">
+      <ScrollView style={{ flex: 0.6 }} className="gap-2">
+        {/* FEEDBACK DE ERROS */}
+        {!validoVisual.valido?<Text className="text-red-500">* {validoVisual.msg}</Text>:<></>}
+        {/* CAMPOS */}
         <View className="gap-2 mb-5">
           {/*Nome*/}
           <InputIcon>
@@ -62,9 +79,9 @@ export default function Cadastro() {
               color={globalStyles.icone.corIcones}
             />
             <TextInput
-              value={nome}
+              value={artista.nome}
+              onChangeText={(e)=>handleUsuario(e, 'nome')}
               keyboardType="default"
-              onChangeText={setNome}
               className="w-[90%] text-xl outline-none font-normal"
               placeholder="Nome Completo"
             />
@@ -77,17 +94,17 @@ export default function Cadastro() {
               color={globalStyles.icone.corIcones}
             />
             <TextInput
-              value={email}
-              onChangeText={setEmail}
+              value={artista.email}
+              onChangeText={(e)=>handleUsuario(e, 'email')}
               keyboardType="email-address"
               className="w-[90%] text-xl outline-none font-normal"
               placeholder="E-mail"
             />
           </InputIcon>
           {/*Senha*/}
-          <InputSenha value={senha} setValue={setSenha} />
+          <InputSenha value={artista.senha} setValue={(e)=>handleUsuario(e,'senha')} placeholder={"Crie uma senha"}/>
           {/*Confirmar Senha*/}
-          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} />
+          <InputSenha value={senhaConfirm} setValue={setSenhaConfirm} placeholder={"Confirme a senha"}/>
           {/*CPF*/}
           <InputIcon>
             <Feather
@@ -95,26 +112,27 @@ export default function Cadastro() {
               size={globalStyles.icone.size}
               color={globalStyles.icone.corIcones}
             />
-            <TextInput
+            <MaskInput
+              mask={Masks.BRL_CPF}
+              value={artista.cpf}
+              onChangeText={(e)=>handleUsuario(e, 'cpf')}
               keyboardType="numeric"
-              value={cpf}
-              onChangeText={setCpf}
+              maxLength={14}
               className="w-[90%] text-xl outline-none font-normal"
-              placeholder="CPF"
-            />
+              placeholder="CPF" />
           </InputIcon>
         </View>
         {/* DATA E SEXO */}
         <View className="flex flex-row justify-between mb-7">
           {/*DATA NASC*/}
           <View>
-            <Text className="font-medium text-lg">Data de Nascimento</Text>
+            <Text className="font-normal text-stone-800 text-lg">Data de Nascimento</Text>
             <Pressable
               onPress={selectDate}
               className="p-4 flex flex-row justify-between items-center border border-stone-300 rounded-lg bg-stone-200"
             >
               <Text className="text-lg font-normal text-stone-800">
-                {dataNasc.toLocaleDateString()}
+                {artista.dataNasc.toLocaleDateString()}
               </Text>
               <Feather
                 name="calendar"
@@ -124,7 +142,7 @@ export default function Cadastro() {
             </Pressable>
             {mostrarData && (
               <RNDateTimePicker
-                value={dataNasc}
+                value={artista.dataNasc}
                 mode="date"
                 maximumDate={new Date()}
                 minimumDate={new Date(new Date().getFullYear()-100,new Date().getMonth()-1 ,new Date().getDate())}
@@ -135,7 +153,7 @@ export default function Cadastro() {
           </View>
           {/*SEXO*/}
           <View className="flex">
-            <Text className="font-medium text-lg">Sexo</Text>
+            <Text className="font-normal text-stone-800 text-lg">Sexo</Text>
             <View className="border border-stone-300 rounded-lg bg-stone-200">
               <Picker
                 style={{
@@ -145,15 +163,14 @@ export default function Cadastro() {
                   textAlign: "center",
                   fontWeight: "semibold",
                 }}
-                selectedValue={sexo}
-                onValueChange={(itemValue) => setSexo(itemValue)}
+                selectedValue={artista.sexo}
+                onValueChange={(itemValue) => handleUsuario(itemValue, 'sexo')}
+                
               >
                 <Picker.Item value="m" label="Masculino" />
-                <Picker.Item
-                  value="f"
-                  label="Feminino"
-                  className="text-black"
-                />
+                <Picker.Item value="f" label="Feminino"/>
+                <Picker.Item value="n" label="Não-Binário"/>
+                <Picker.Item value="" label="Prefiro não dizer"/>
               </Picker>
             </View>
           </View>
@@ -172,7 +189,7 @@ export default function Cadastro() {
             />
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }

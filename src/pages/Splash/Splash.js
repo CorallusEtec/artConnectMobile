@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import useStore from '../../store';
-import ArtistaService from '../../services/ArtistaService';
+import {ArtistaService} from '../../services/ArtistaService';
 
 import {View, ActivityIndicator} from 'react-native';
 import Logo from '../../components/Logo';
@@ -11,7 +11,6 @@ export default function Splash() {
     const setLocalUser = useStore(state=> state.alter)
     {/* ENQUANTO NÃO TEM VALIDAÇÃO DE LOGIN, SIMULAÇÃO DE CARREGAR */}
     async function load() {
-        console.log("Rodando")
         const user = await ArtistaService.getUserLocal();
         if(user != null) {
             setLocalUser(user);
@@ -30,7 +29,7 @@ export default function Splash() {
             <View style={{flex:0.5}} className="justify-end">
                 <Logo width={300} height={200} />
             </View>
-            <View style={{flex:1}} className="justify-start">
+            <View style={{flex:0.5}} className="justify-start">
                 <ActivityIndicator size={'large'} color={"#ffffff"} />
             </View>
         </View>
