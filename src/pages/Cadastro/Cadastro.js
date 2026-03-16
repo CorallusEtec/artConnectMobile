@@ -6,7 +6,7 @@ import InputIcon from "../../components/InputIcon";
 import { Picker } from "@react-native-picker/picker";
 import ArtistaModel from '../../models/ArtistaModel';
 import Feather from "@expo/vector-icons/Feather";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../globalStyles";
 import useStore from '../../store';
@@ -19,6 +19,8 @@ export default function Cadastro() {
   const [validoVisual, setValidoVisual] = useState(valido)
   const [artista, setArtista] = useState(new ArtistaModel(null));
   const [senhaConfirm, setSenhaConfirm] = useState("");
+/* CARREGA O ESTADO GLOBAL DO ARTISTA */
+  const stateUsuario = useStore(store=>store.usuario)
 
   /* ALTERA O ESTADO GLOBAL */
   const alterStateUsuario = useStore(store=>store.alter)
@@ -32,7 +34,16 @@ export default function Cadastro() {
     setMostrarData(false);
     handleUsuario(data, 'dataNasc');
   }
-
+  /* FEEDBACK SAI DEPOIS DE UM TEMPO */
+  function refreshValido(state, tempo) {
+    setValidoVisual(state);
+    setTimeout(()=>{
+        setValidoVisual(st=>({
+            ...st,
+            valido: true
+        }));
+    }, tempo)
+  }
   /* ALTERA O STATE DO USUARIO */
   function handleUsuario(valor, campo) {
     switch (campo) {
@@ -48,13 +59,21 @@ export default function Cadastro() {
   function coletarDados() {
     valido = ArtistaService.validarCampos(artista, senhaConfirm, ['nome', 'email', 'senha', 'cpf', 'dataNasc'])
     if(valido.valido) {
-      artista.dataNasc = artista.dataNasc.toISOString().split('T')[0];
+      artista.dataNasc = artista.dataNasc;
       alterStateUsuario(artista);
       navigation.navigate("CadastroEndereco");
     } else {
-      setValidoVisual(valido);
+      refreshValido(valido, 3000);
     }
   }
+
+  useEffect(()=>{
+    if(stateUsuario == null) {
+      setArtista(new ArtistaModel(null));
+    } else {
+      setArtista(new ArtistaModel(stateUsuario));
+    }
+  }, [])
 
   return (
     <View className="p-3" style={{ flex: 1, flexDirection: "column" }}>
