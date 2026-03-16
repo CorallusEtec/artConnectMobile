@@ -37,7 +37,13 @@ export class ArtistaService {
                             return valido.invalido("Insira um CPF válido");
                         }
                     }
-                }
+                } else if(campos[i] == 'cep') {
+                    if(GlobalService.cepPattern.test(artista[campos[i]]) == false) {
+                        if(GlobalService.cepPattern.test(artista[campos[i]]) == false) {
+                            return valido.invalido("Digite um CEP válido");
+                        }
+                    }
+                } 
             } else if(typeof artista[campos[i]] == 'object') {
                 if(campos[i] == 'dataNasc') {
                     const hoje = new Date();
@@ -56,6 +62,12 @@ export class ArtistaService {
                     }
                 }
             
+            } else if(typeof artista[campos[i]] == 'number') {
+                if(campos[i] == 'numLog') {
+                    if(artista[campos[i]] == 0) {
+                        return valido.invalido("Insira o número do endereço")
+                    }
+                }
             }
         }
         return valido;

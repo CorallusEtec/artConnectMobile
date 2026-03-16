@@ -3,49 +3,58 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import useStore from "../../store";
-import ArteService from "../../services/ArteService";
+import { ArtistaService } from "../../services/ArtistaService";
 import ArtistaModel from "../../models/ArtistaModel";
-import ArtistaService from "../../services/ArtistaService";
+import ArteService from "../../services/ArteService";
 
 export default function TipoArte() {
 
-  const usuario = useStore(store=>store.usuario);
+  const [artista, setArtista] = useState(new ArtistaModel(null));
+  const usuarioStore = useStore(store=>store.usuario);
   const saveStateUsuario = useStore(store=>store.alter);
   const navigation = useNavigation();
   const [selectedArt, setSelectedArt] = useState(1);
   
   const [listaArte, setListaArte] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+  const [load, setLoad] = useState(true);
+
+  async function carregarArte() {
+    try {
+      const dados = await ArteService.findAll();
+      setListaArte(dados);
+    } catch (erro) {
+      console.error(erro);
+    } finally {
+      setLoad(false);
+    }
+  }
 
   useEffect(()=> {
-    async function carregarArte() {
-      try {
-        const dados = await ArteService.findAll();
-        console.log(dados);
-        setListaArte(dados);
-      } catch (erro) {
-        console.error(erro);
-      } finally {
-        setCarregando(false);
+    try {
+      carregarArte();
+      if(usuarioStore == null) {
+        navigation.navigate("Cadastro");
+      } else {
+        setArtista(new ArtistaModel(usuarioStore));
       }
+
+    } finally {
+      setLoad(false)
     }
-    carregarArte();
   }, [])
 
   function criarConta() {
-    usuario.idArte = selectedArt;
-    const artista = new ArtistaModel(usuario);
+    artista.idArte = selectedArt;
     saveArtista(artista);
     navigation.navigate("Home");
   }
   async function saveArtista(artista) {
-    console.log(JSON.stringify(artista));
     await ArtistaService.save(artista);
     await ArtistaService.saveUserLocal(artista);
     saveStateUsuario(artista);
   }
 
-  if(carregando) return <ActivityIndicator size="large" />
+  if(load) return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator size="large" /></View>
 
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
@@ -59,7 +68,7 @@ export default function TipoArte() {
       >
         <View className="items-center mb-2 mt-10">
           <Text className="text-5xl font-light text-gray-500 m-2.5">
-            Olá {usuario.nome}
+            Olá {usuarioStore.nome}
           </Text>
 
           <View className="items-center">

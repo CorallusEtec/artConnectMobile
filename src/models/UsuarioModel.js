@@ -6,7 +6,7 @@ export default class UsuarioModel {
             this.senha = "";
             this.tipoLog = "";
             this.nomeLog = "";
-            this.numLog = 1;
+            this.numLog = 0;
             this.complemento = "";
             this.cep = "";
             this.bairro = "";

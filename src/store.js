@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-    usuario: {},
+    usuario: null,
     alter: (novoUsuario) => set(() => ({ usuario: novoUsuario })),
-    logout: () => set(() => ({usuario: {} }))
+    logout: () => set(() => ({usuario: null }))
 }));
 
 export default useStore;
