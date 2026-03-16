@@ -5,8 +5,8 @@ export default class ArtistaModel extends UsuarioModel {
         super(data);
         if(data == null) {
             this.cpf = "";
-            this.dataNasc = new Date(2000,0,1);
-            this.sexo = "",
+            this.dataNasc = new Date(2000,0,1, 3, 0,0);
+            this.sexo = "f",
             this.idArte = 1
         } else {
             this.cpf = data.cpf;

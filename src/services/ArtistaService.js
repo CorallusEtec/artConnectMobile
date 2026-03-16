@@ -1,7 +1,71 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import config from './config';
-export default class ArtistaService {
+import { GlobalService } from './GlobalService';
+import { ErroValidacao } from './ErroValidacao';
+export class ArtistaService {
+    static cpfPattern = /([0-9]{3})\.([0-9]{3})\.([0-9]{3})\-([0-9]{2})/g
+    /* 
+     * VALIDAÇÕES 
+     */
+    
+    static validarCampos(artista, senhaConfirm, campos) {
+        const valido = new ErroValidacao("");
+        for(let i=0; i<campos.length; i++) {
+            if(typeof artista[campos[i]] == 'string') {
+                if(artista[campos[i]].trim() == "") {
+                    return valido.invalido("Há Campos não preenchidos");
+                }
 
+                if(campos[i] == 'senha') {
+                    if(artista[campos[i]].trim().length < 6) {
+                        return valido.invalido("A senha deve conter no mínimo 6 caracteres");
+                    }
+                    if(senhaConfirm != undefined) {
+                        if(senhaConfirm.trim() != artista[campos[i]].trim()) {
+                            return valido.invalido("As senhas não se conhecidem");
+                        }
+                    }
+                } else if(campos[i] == 'email') {
+                    if(GlobalService.emailPattern.test(artista[campos[i]].trim()) == false) {
+                        if(GlobalService.emailPattern.test(artista[campos[i]].trim()) == false) {
+                            return valido.invalido("Insira um endereço de email válido")
+                        }
+                    }
+                } else if(campos[i] == 'cpf') {
+                    if(ArtistaService.cpfPattern.test(artista[campos[i]]) == false) {
+                        if(ArtistaService.cpfPattern.test(artista[campos[i]]) == false) {
+                            return valido.invalido("Insira um CPF válido");
+                        }
+                    }
+                }
+            } else if(typeof artista[campos[i]] == 'object') {
+                if(campos[i] == 'dataNasc') {
+                    const hoje = new Date();
+                    const nascimento = artista[campos[i]];
+                    
+                    // Calcula a diferença de idade
+                    let idade = hoje.getFullYear() - nascimento.getFullYear();
+                    const mes = hoje.getMonth() - nascimento.getMonth();
+                    
+                    // Ajusta se o aniversário ainda não ocorreu este ano
+                    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+                        idade--;
+                    }
+                    if(idade<18) {
+                        return valido.invalido("O artista deve ser maior de idade");
+                    }
+                }
+            
+            }
+        }
+        return valido;
+    }
+    
+    
+    
+    /*
+     * CRUDS
+     */
     static async login(email, senha) {
         try {
             const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
@@ -82,7 +146,7 @@ export default class ArtistaService {
     }
     }
 
-static async criarContato(id, contatoData) {
+    static async criarContato(id, contatoData) {
 
     try {
 
