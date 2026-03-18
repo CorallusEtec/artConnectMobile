@@ -12,7 +12,6 @@ export default function Splash() {
     {/* ENQUANTO NÃO TEM VALIDAÇÃO DE LOGIN, SIMULAÇÃO DE CARREGAR */}
     async function load() {
         const user = await ArtistaService.getUserLocal();
-        console.log(user);
         if(user != null) {
             setLocalUser(user);
             navigate.navigate("Home");
