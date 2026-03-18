@@ -10,4 +10,14 @@ export default class ArteService {
         
         }
     }
+
+    static async getArte(idArte) {
+        try {
+            const data = await fetch(`${config.apiUrl}/arte/${idArte}`);
+
+            return data.json();
+        } catch(e) {
+
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import { View, Text, TextInput, Pressable, ScrollView, ActivityIndicator } from "react-native";
 import MaskInput, { Masks } from 'react-native-mask-input';
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputSenha from "../../components/InputSenha";
@@ -19,6 +19,7 @@ export default function Cadastro({ route }) {
   let valido = new ErroValidacao();
   const [validoVisual, setValidoVisual] = useState(valido)
   const [artista, setArtista] = useState(new ArtistaModel(null));
+  const [load, setLoad] = useState(true);
   const [senhaConfirm, setSenhaConfirm] = useState("");
 /* CARREGA O ESTADO GLOBAL DO ARTISTA */
   const stateUsuario = useStore(store=>store.usuario)
@@ -56,6 +57,7 @@ export default function Cadastro({ route }) {
       break;
     }
   }
+  console.log(artista.dataNasc);
   /* VALIDAÇÃO DE CAMPOS E PASSAGEM PARA PRÓXIMA TELA */
   function coletarDados() {
     valido = ArtistaService.validarCampos(artista, senhaConfirm, ['nome', 'email', 'senha', 'cpf', 'dataNasc'])
@@ -72,12 +74,12 @@ export default function Cadastro({ route }) {
     if(route.params != undefined) {
       refreshValido(route.params, 3000);
     }
-    if(stateUsuario == null) {
-      setArtista(new ArtistaModel(null));
-    } else {
+    if(stateUsuario != null) {
       setArtista(new ArtistaModel(stateUsuario));
     }
+    setLoad(false);
   }, [])
+  if(load) return <ActivityIndicator size={"large"} />
 
   return (
     <SafeAreaView className="p-3" style={{ flex: 1, flexDirection: "column" }}>

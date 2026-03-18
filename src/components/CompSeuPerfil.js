@@ -1,11 +1,36 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Feather from "@expo/vector-icons/Feather";
-import { View, Pressable, Text } from "react-native";
-import useStore from "../store";
+import { View, Pressable, Text, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { ArtistaService } from "../services/ArtistaService";
+import ArtistaModel from "../models/ArtistaModel";
+import ArteService from "../services/ArteService";
 export default function CompSeuPerfil() {
-  const usuario = useStore(state=>state.usuario);
   const navigator = useNavigation()
+  const [load, setLoad] = useState(true);
+  const [artista, setArtista] = useState(new ArtistaModel(null)); 
+
+  useEffect(()=>{
+    try {
+      (async()=>{
+        const data = await ArtistaService.getUserLocal();
+        const usuario = await ArtistaService.login(data.email, data.senha);
+        usuario.nomeArte = await getNomeArte(usuario.idArte);
+
+        setArtista(usuario);
+      })();
+    } finally {
+      setLoad(false);
+    }
+  }, [])
+  console.log(artista);
+  async function getNomeArte(idArte) {
+    const arte = await ArteService.getArte(idArte);
+    return arte.nomeArte;
+  }
+
+      if(load) return <View><ActivityIndicator size={"large"} /></View>
     return (
       <View className=" bg-stone-200 rounded-lg gap-2 p-2">
         <View className="flex-row">
@@ -17,7 +42,7 @@ export default function CompSeuPerfil() {
             <View className="flex-row items-center justify-between">
               <View className="flex-row justify-center w-[85%]">
                 <Text className="text-stone-800 text-lg font-semibold">
-                  {usuario.nome}
+                  {artista.nome}
                 </Text>
               </View>
               <Pressable onPress={()=>navigator.navigate("EditarPerfil")} className="w-[15%]">
@@ -26,8 +51,8 @@ export default function CompSeuPerfil() {
             </View>
             {/* ARTE E LOCAL */}
             <View className="flex-row justify-around">
-              <Text className=" text-base">Ginasta Rítmico</Text>
-              <Text className=" text-base text-stone-500">São Paulo - SP</Text>
+              <Text className=" text-base">{artista.nomeArte}</Text>
+              <Text className=" text-base text-stone-500">{artista.cidade} - {artista.estado}</Text>
             </View>
           </View>
         </View>

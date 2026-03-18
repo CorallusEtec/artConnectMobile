@@ -89,10 +89,12 @@ export class ArtistaService {
      */
     static async login(email, senha) {
         try {
+            console.log("execute")
             const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
+            console.log("Status: "+data.status);
             return data.json();
         } catch(erro) {
-            return new ErroValidacao().invalido("Não foi possivel fazer login");
+
         }
     }
 
@@ -125,43 +127,19 @@ export class ArtistaService {
         }
     }
 
-    static async alterarUsuario(dadosUsuario) {
+    static async alterarArtista(artista) {
         try{
-            const userString = await AsyncStorage.getItem('@login');
-            if (!userString) {
-                throw new Error ("Usuario não encontrado")
-            }
-
-            const user = JSON.parse(userString);
-            const id = user.id;
-            const response = await fetch(`${config.apiUrl}/artista/alterar/${id}`, {
+            const response = await fetch(`${config.apiUrl}/artista/alterar/${artista.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    id: id,  
-                    nome: dadosUsuario.nome,   
-                    bairro: dadosUsuario.bairro,
-                    cep: dadosUsuario.cep,
-                    cidade: dadosUsuario.cidade,
-                    complemento: dadosUsuario.complemento,
-                    nomeLog: dadosUsuario.nomeLog,
-                    numLog: dadosUsuario.numLog,
-                    tipoLog: dadosUsuario.tipoLog,
-                    estado: dadosUsuario.estado
-                })
+                body: JSON.stringify(artista)
         });
-
-        const data = await response.text();
-
-        if(!response.ok) {
-            throw new Error(data || "Erro ao alterar");
+            return response.status;
+        } catch(error) {
+        
         }
-        return data
-    } catch(error) {
-        console.error("Erro ao alterar usuario:",error);
-    }
     }
 
     static async criarContato(id, contatoData) {
