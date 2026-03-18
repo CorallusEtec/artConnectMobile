@@ -24,7 +24,6 @@ export default function CompSeuPerfil() {
       setLoad(false);
     }
   }, [])
-  console.log(artista);
   async function getNomeArte(idArte) {
     const arte = await ArteService.getArte(idArte);
     return arte.nomeArte;

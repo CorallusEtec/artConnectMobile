@@ -89,12 +89,15 @@ export class ArtistaService {
      */
     static async login(email, senha) {
         try {
-            console.log("execute")
-            const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
-            console.log("Status: "+data.status);
+            const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                method: 'GET'
+            });
             return data.json();
         } catch(erro) {
-
         }
     }
 
@@ -108,7 +111,6 @@ export class ArtistaService {
                 },
                 method: 'POST'
             });
-            console.log(data.status)
         } catch(erro) {
             console.error('Erro ao buscar artistas:', erro);
         }

@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image, Modal, Alert, ActivityIndicator, ScrollView } from "react-native";
+import { View, Text, Pressable, ActivityIndicator, ScrollView } from "react-native";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -147,7 +147,7 @@ export default function EditarPerfil() {
                 </Text>
             </View>
 
-            <ScrollView className="p-3">
+            <ScrollView style={{flex:0.8}} className="p-3">
                 {/*FOTO DE PERFIL*/}
                 <View className="mb-5">
                     <View className="flex-row justify-center mb-2">
