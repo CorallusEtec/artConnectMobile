@@ -6,20 +6,23 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Post from "../../components/Post";
 import CompSeuPerfil from "../../components/CompSeuPerfil";
 
-import useStore from "../../store";
 import { useState } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SeuPerfil() {
+
     const navigation = useNavigation();
     const [modal, setModal] = useState (false);
-    const abrirModal = () =>{
-        setModal(true)
+
+    async function sair() {
+        await AsyncStorage.clear();
+        navigation.navigate("Login");
+        setModal(false);
     }
-    const fecharModal = () =>{
-        setModal(false)
-    }
+
     return (
-        <View style={{flex:1}}>
+        <SafeAreaView style={{flex:1}}>
             {/* HEADER */}
             <View className="flex-row bg-teal-500 p-4 items-center justify-between">
                 <View className="flex-row items-center gap-3">
@@ -28,7 +31,7 @@ export default function SeuPerfil() {
                     </Pressable>
                 <Text className="text-2xl font-light text-white">Seu Perfil</Text>
                 </View>
-                <Pressable onPress={abrirModal}>
+                <Pressable onPress={()=>setModal(true)}>
                     <Feather name="settings" size={24} color="white" />
                 </Pressable>
                 <Modal
@@ -37,7 +40,7 @@ export default function SeuPerfil() {
                     <View className="flex-1 justify-center items-center bg-black/50">
                         <View className="bg-white rounded-3xl items-center w-[90%]">
                             <View className="flex-row">
-                                <Pressable onPress={fecharModal}>
+                                <Pressable onPress={()=>setModal(false)}>
                                     <Ionicons className="m-3" name="close" size={25} color="gray" />
                                 </Pressable>
                                 <Text className="text-2xl m-3 mr-14">Configurações</Text>
@@ -47,7 +50,7 @@ export default function SeuPerfil() {
                             <Text className="text-xl m-3 text-gray-600">Suporte</Text>
                             <Text className="text-xl m-3 text-gray-600">Contas bloqueadas</Text>
                             <Text className="text-xl m-3 text-gray-600">Sobre o Art Connect</Text>
-                            <Pressable>
+                            <Pressable onPress={()=>sair()}>
                                 <View className="flex-row">
                                     <Text className="text-2xl m-3">Sair</Text>
                                     <Ionicons className="m-4" name="exit-outline" size={25} color="gray" />
@@ -64,6 +67,6 @@ export default function SeuPerfil() {
             </View>
             {/* BARRA DE NAVEGAÇÃO */}
             <IconBar />
-        </View>
+        </SafeAreaView>
     )
 }

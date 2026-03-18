@@ -1,23 +1,44 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import Header from "../../components/Header";
 import IconBar from "../../components/IconBar";
 import Post from "../../components/Post";
-import useStore from "../../store";
+import ArtistaModel from '../../models/ArtistaModel';
+import { useEffect, useState } from "react";
+import { ArtistaService } from "../../services/ArtistaService";
+import { useNavigation } from "@react-navigation/native";
+import { ErroValidacao } from "../../services/ErroValidacao";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
+    const [load, setLoad] = useState(true);
+    const [artista, setArtista] = useState(new ArtistaModel(null));
+    const navigation = useNavigation();
+    useEffect(()=>{
+        try {
+            (async()=>{
+                const data = await ArtistaService.getUserLocal();
+                const artista = await ArtistaService.login(data.email, data.senha);
+                if(artista != null) {
+                    setArtista(artista);
+                }
+            })();
+        } finally {
+            setLoad(false);
+        }
+    }, []);
 
-    const usuario = useStore(state=> state.usuario)
+    if(load) return <View><ActivityIndicator size={"large"} /></View>
 
     return (
-        <View style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
             <Header />
             <View style={{flex:1}} className="p-2">
                 <View className="mb-5">
-                    <Text className="text-2xl font-light">Olá, {usuario.nome}</Text>
+                    <Text className="text-2xl font-light">Olá, {artista.nome}</Text>
                 </View>
                 <Post />
             </View>
             <IconBar />
-        </View>
+        </SafeAreaView>
     )
 }

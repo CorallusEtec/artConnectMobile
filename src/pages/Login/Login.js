@@ -2,18 +2,18 @@ import { View, Text, Pressable, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import InputSenha from '../../components/InputSenha';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArtistaService} from '../../services/ArtistaService'
 import useStore from "../../store";
 import Logo from "../../components/Logo";
 import InputIcon from "../../components/InputIcon";
 import { ErroValidacao } from "../../services/ErroValidacao";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Login() {
+export default function Login({ route }) {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const alterStateUsuario = useStore(state=>state.alter)
   
   /* FUNÇÕES E ESTADOS QUE MOSTRAM E MANIPULAM FEEDBACK DE VALIDAÇÃO */
   let valido = new ErroValidacao();
@@ -28,31 +28,40 @@ export default function Login() {
     }, tempo)
   }
 
-  async function logar() {
+  function logar() {
     valido = ArtistaService.validarLogin([email, senha])
+    console.log(email);
     feedbackFade(valido, 2500);
     try {
-      if(valido.valido) {
-        const data = await ArtistaService.login(email, senha);
-        if(data instanceof ErroValidacao) {
-          valido = data;
-          feedbackFade(valido, 2500)
+      (async()=>{
+        if(valido.valido) {
+          const data = await ArtistaService.login(email, senha);
+          if(data instanceof ErroValidacao) {
+            valido = data;
+            feedbackFade(valido, 2500)
+          } else {
+            await ArtistaService.saveUserLocal({email: email, senha: senha});
+            navigation.navigate("Home");
+          }
         } else {
-          alterStateUsuario(data);
-          await ArtistaService.saveUserLocal(data);
-          navigation.navigate("Home");
+          valido = valido.invalido("E-mail e/ou senha inválidos");
+          feedbackFade(valido, 2000);
         }
-      }
+      })();
     } catch (e) {
       
     }
   }
 
-
+  useEffect(()=>{
+    if(route.params instanceof ErroValidacao) {
+      feedbackFade(route.params, 2000)
+    }
+  }, [])
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#04CBAC" }}>
+    <SafeAreaView style={{ flex: 1 }}>
       {/*IMAGEM DE FUNDO*/}
       <View className="flex items-center" style={{ backgroundColor: "#04CBAC" }}>
         <Logo height={200} width={300} />
@@ -128,7 +137,7 @@ export default function Login() {
           </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
   /**
  * ENTRAR SEM LOGIN (IMPLEMENTAR DEPOIS)

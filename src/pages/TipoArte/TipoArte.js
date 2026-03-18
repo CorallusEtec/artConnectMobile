@@ -12,7 +12,6 @@ export default function TipoArte() {
 
   const [artista, setArtista] = useState(new ArtistaModel(null));
   const usuarioStore = useStore(store=>store.usuario);
-  const saveStateUsuario = useStore(store=>store.alter);
   const navigation = useNavigation();
   const [selectedArt, setSelectedArt] = useState(1);
   
@@ -51,12 +50,10 @@ export default function TipoArte() {
   function criarConta() {
     artista.idArte = selectedArt;
     saveArtista(artista);
-    navigation.navigate("Home");
+    navigation.navigate("Login");
   }
   async function saveArtista(artista) {
     await ArtistaService.save(artista);
-    await ArtistaService.saveUserLocal(artista);
-    saveStateUsuario(artista);
   }
 
   if(load) return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator size="large" /></View>
