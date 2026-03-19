@@ -18,7 +18,9 @@ import MaskInput from "react-native-mask-input";
 
 export default function EditarPerfil() {
     const navigation = useNavigation();
+    const [inputContato, setInputContato] = useState("");
     const [artista, setArtista] = useState(new ArtistaModel(null));
+    const [listaContatos, setListaContatos] = useState([]);
     const [load, setLoad] = useState(true);
     let valido = new ErroValidacao();
     const [validoVisual, setValidoVisual] = useState(valido);
@@ -107,11 +109,9 @@ export default function EditarPerfil() {
                 await fetchUfs();
                 const login = await ArtistaService.getUserLocal();
                 const data = await ArtistaService.login(login.email, login.senha);
-                if(data != null || data != undefined) {
-                    setArtista(data);
-                } else {
-                    navigation.navigate("Login", new ErroValidacao().invalido("Erro na requisição, tente mais tarde"))
-                }
+                setArtista(data);
+                const lista = await ArtistaService.todosContatos(data.id);
+                setListaContatos(lista);
             })();
         } finally {
             setLoad(false);
@@ -132,6 +132,40 @@ export default function EditarPerfil() {
             })();
         } else {
             refreshValido(valido, 2000);
+        }
+    }
+
+    function addContato() {
+        setLoad(true);
+        const contato = {
+            valorContato: inputContato,
+            idArtista: artista.id
+        }
+        try {
+            (async()=>{
+                await ArtistaService.addContato(artista.id, contato);
+
+                const data = await ArtistaService.todosContatos(artista.id);
+                setListaContatos(data);
+            })();
+        } finally {
+            setLoad(false);
+            setInputContato("");
+        }
+
+    }
+    function deleteContato(idContato) {
+        setLoad(true);
+        
+        try {
+            (async()=>{
+                await ArtistaService.deleteContato(idContato);
+                const data = await ArtistaService.todosContatos(artista.id);
+                setListaContatos(data);
+            })();
+        } finally {
+            setLoad(false);
+            setInputContato("");
         }
     }
 
@@ -183,7 +217,26 @@ export default function EditarPerfil() {
                             />
                         </View >
                     </View>
-
+                    <View className="gap-3">
+                        <Text className="font-normal text-2xl">Contatos</Text>
+                        <View className="mb-2 gap-3">
+                            {listaContatos.length<=0?<Text className="text-lg">Nenhum contato adicionado</Text>:<></>}
+                            {listaContatos.map(c=>(
+                                <View className="flex-row bg-stone-200 rounded-lg justify-between" key={c.id}>
+                                    <Text className="text-stone-800 text-lg p-1" >{c.valorContato}</Text>
+                                    <Pressable onPress={()=>deleteContato(c.id)} className="bg-red-500 p-1 flex justify-center items-center rounded-r-lg">
+                                        <Feather name="trash-2" size={24} color="white" />
+                                    </Pressable>
+                                </View>
+                            ))}
+                        </View>
+                        <View className="flex-row border border-stone-300 bg-stone-100 rounded-lg">
+                            <TextInput placeholder="Contato" className="text-xl p-1 outline-none w-[90%]" keyboardType="default" value={inputContato} onChangeText={setInputContato} />
+                            <Pressable onPress={()=>addContato()} className="bg-emerald-500 w-[10%] flex justify-center items-center rounded-r-lg">
+                                <Feather name="plus" size={24} color="white" />
+                            </Pressable>
+                        </View>
+                    </View>
                     {/* ENDEREÇO */}
                     <View className="gap-3">
                         <Text className="font-normal text-2xl">Endereço</Text>

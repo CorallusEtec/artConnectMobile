@@ -9,6 +9,7 @@ import ArteService from "../services/ArteService";
 export default function CompSeuPerfil() {
   const navigator = useNavigation()
   const [load, setLoad] = useState(true);
+  const [listaContatos, setListaContatos] = useState([]);
   const [artista, setArtista] = useState(new ArtistaModel(null)); 
 
   useEffect(()=>{
@@ -17,7 +18,8 @@ export default function CompSeuPerfil() {
         const data = await ArtistaService.getUserLocal();
         const usuario = await ArtistaService.login(data.email, data.senha);
         usuario.nomeArte = await getNomeArte(usuario.idArte);
-
+        const lista = await ArtistaService.todosContatos(usuario.id);
+        setListaContatos(lista);
         setArtista(usuario);
       })();
     } finally {
@@ -73,10 +75,14 @@ export default function CompSeuPerfil() {
             </View>
             {/* CONTATOS */}
             <View className="items-center">
-                <Pressable className="flex-row items-center gap-2">
+                <Pressable className="flex-row mb-3 items-center gap-2">
                     <Feather name="paperclip" size={20} color="black" />
-                    <Text className="font-semibold text-teal-800">Contatos</Text>
+                    <Text className="font-semibold text-xl text-teal-800">Contatos</Text>
                 </Pressable>
+                {listaContatos.length<=0?<Text className="text-stone-800 text-lg">Nenhum contato adicionado</Text>:<></>}
+                {listaContatos.map(c=>(
+                  <Text className="text-lg" key={c.id}>{c.valorContato}</Text>
+                ))}
             </View>
         </View>
       </View>

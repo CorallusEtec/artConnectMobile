@@ -30,7 +30,6 @@ export default function Login({ route }) {
 
   function logar() {
     valido = ArtistaService.validarLogin([email, senha])
-    console.log(email);
     feedbackFade(valido, 2500);
     try {
       (async()=>{

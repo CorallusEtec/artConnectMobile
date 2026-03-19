@@ -20,6 +20,8 @@ export default function Home() {
                 const artista = await ArtistaService.login(data.email, data.senha);
                 if(artista != null) {
                     setArtista(artista);
+                } else {
+                    navigation.navigate("Login", new ErroValidacao().invalido("Não foi possível fazer login, tente mais tarde"));
                 }
             })();
         } finally {
@@ -36,7 +38,10 @@ export default function Home() {
                 <View className="mb-5">
                     <Text className="text-2xl font-light">Olá, {artista.nome}</Text>
                 </View>
-                <Post />
+                <View className="gap-3">
+                    <Post />
+                    <Post />
+                </View>
             </View>
             <IconBar />
         </SafeAreaView>
