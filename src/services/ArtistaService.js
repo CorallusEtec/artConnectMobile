@@ -83,19 +83,54 @@ export class ArtistaService {
         return valido;
     }
     
+
+    static async addContato(idArtista, contato) {
+        try {
+            await fetch(`${config.apiUrl}/artista/criar-contato/${idArtista}`,{
+                body: JSON.stringify(contato),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                method: 'POST'
+            })
+        } catch(e) {
+
+        }
+    }
+
+    static async deleteContato(idContato) {
+        try {
+            await fetch(`${config.apiUrl}/artista/deletar-contato/${idContato}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                method: 'DELETE'
+            })
+        } catch(e) {
+            
+        }
+    }
+
+    static async todosContatos(idArtista) {
+        try {
+            const data = await fetch(`${config.apiUrl}/artista/${idArtista}/todos`)
+            return data.json();
+        } catch (e) {
+
+        }
+    }
+
+
+
     
     /*
      * CRUDS
      */
     static async login(email, senha) {
         try {
-            const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                method: 'GET'
-            });
+            const data = await fetch(`${config.apiUrl}/login/logar?email=${email}&senha=${senha}`);
             return data.json();
         } catch(erro) {
         }
