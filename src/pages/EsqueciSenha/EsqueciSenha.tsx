@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Image, Pressable, TextInput, Button } from 'react-native';
-import styles from './estilo.js';
+import { Text, View, Image, Pressable, TextInput } from 'react-native';
+import styles from './estilo';
 import { useNavigation } from '@react-navigation/native';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 
@@ -17,7 +17,7 @@ export default function EsqueciSenha() {
   {/*Botao Voltar*/}
 
             <View style={styles.Bloco1}>
-                <Pressable onPress={() => navigation.navigate('Login')}>
+                <Pressable onPress={() => navigation.goBack()} className="p-2">
 
                     <EvilIcons name="arrow-left" size={60} color="#009966" />
                 </Pressable>

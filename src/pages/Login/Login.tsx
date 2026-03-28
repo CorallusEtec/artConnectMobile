@@ -1,63 +1,21 @@
 import { View, Text, Pressable, TextInput } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import Feather from "@expo/vector-icons/Feather";
 import InputSenha from '../../components/InputSenha';
-import { useEffect, useState } from "react";
-import { ArtistaService} from '../../services/ArtistaService'
-import useStore from "../../store";
+import { useState } from "react";
 import Logo from "../../components/Logo";
 import InputIcon from "../../components/InputIcon";
-import { ErroValidacao } from "../../services/ErroValidacao";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Login({ route }) {
+export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  
-  /* FUNÇÕES E ESTADOS QUE MOSTRAM E MANIPULAM FEEDBACK DE VALIDAÇÃO */
-  let valido = new ErroValidacao();
-  const [validoVisual, setValidoVisual] = useState(valido);
-  function feedbackFade(state, tempo) {
-    setValidoVisual(state);
-    setTimeout(()=>{
-      setValidoVisual(st=>({
-        ...st,
-        valido: true
-      }))
-    }, tempo)
-  }
+
 
   function logar() {
-    valido = ArtistaService.validarLogin([email, senha])
-    feedbackFade(valido, 2500);
-    try {
-      (async()=>{
-        if(valido.valido) {
-          const data = await ArtistaService.login(email, senha);
-          if(data instanceof ErroValidacao) {
-            valido = data;
-            feedbackFade(valido, 2500)
-          } else {
-            await ArtistaService.saveUserLocal({email: email, senha: senha});
-            navigation.navigate("Home");
-          }
-        } else {
-          valido = valido.invalido("E-mail e/ou senha inválidos");
-          feedbackFade(valido, 2000);
-        }
-      })();
-    } catch (e) {
-      
-    }
+    navigation.dispatch(CommonActions.navigate("Home"));
   }
-
-  useEffect(()=>{
-    if(route.params instanceof ErroValidacao) {
-      feedbackFade(route.params, 2000)
-    }
-  }, [])
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -80,7 +38,7 @@ export default function Login({ route }) {
         <View className="p-3 gap-3 mb-5">
           {/* CAMPOS  */}
           <View className="gap-2">
-            {!validoVisual.valido?<Text className="text-base text-red-500">* {validoVisual.msg}</Text>:<></>}
+           
             {/*E-MAIL*/}
             <InputIcon>
               <Feather
@@ -128,7 +86,7 @@ export default function Login({ route }) {
         <View className="flex-row justify-center">
           <Pressable
             className="flex-row justify-center"
-            onPress={() => navigation.navigate("Cadastro")}
+            onPress={() => navigation.dispatch(CommonActions.navigate("Cadastro"))}
           >
           <Text className="font-light text-lg">Não tem Cadastro? </Text>
           

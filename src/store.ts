@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-    usuario: null,
-    alter: (novoUsuario) => set(() => ({ usuario: novoUsuario })),
+    usuario: Object,
+    alter: (novoUsuario: Object) => set(() => ({ usuario: novoUsuario })),
     logout: () => set(() => ({usuario: null }))
 }));
 

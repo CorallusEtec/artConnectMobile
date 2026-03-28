@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native"
+import { View, Pressable } from "react-native"
 import Feather from '@expo/vector-icons/Feather';
 import Logo from "./Logo";
 export default function Header() {
