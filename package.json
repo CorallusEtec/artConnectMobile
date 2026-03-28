@@ -1,7 +1,7 @@
 {
   "name": "artconnectmobile",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -16,6 +16,7 @@
     "@react-native-picker/picker": "2.11.1",
     "@react-navigation/native": "^7.1.28",
     "@react-navigation/stack": "^7.7.2",
+    "@types/react": "~19.1.10",
     "babel-preset-expo": "^54.0.10",
     "bootstrap-icons": "^1.13.1",
     "expo": "~54.0.33",
@@ -40,6 +41,7 @@
     "react-native-web": "^0.21.0",
     "react-native-worklets": "0.5.1",
     "tailwindcss": "^3.4.17",
+    "typescript": "~5.9.2",
     "zustand": "^5.0.11"
   },
   "private": true,

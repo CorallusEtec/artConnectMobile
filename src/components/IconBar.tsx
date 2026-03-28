@@ -1,6 +1,6 @@
 import { Pressable, View } from "react-native"
 import Feather from '@expo/vector-icons/Feather';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 export default function IconBar() {
     const navigation = useNavigation();
     return (
@@ -11,13 +11,13 @@ export default function IconBar() {
             <Pressable>
                 <Feather name="plus" size={24} color="white" />
             </Pressable>
-            <Pressable onPress={()=>navigation.navigate("Home")}>
+            <Pressable onPress={()=>navigation.dispatch(CommonActions.navigate("Home"))}>
                 <Feather name="home" size={24} color="white" />
             </Pressable>
             <Pressable>
                 <Feather name="bell" size={24} color="white" />
             </Pressable>
-            <Pressable onPress={()=>navigation.navigate("SeuPerfil")}>
+            <Pressable>
                 <Feather name="user" size={24} color="white" />
             </Pressable>
         </View>

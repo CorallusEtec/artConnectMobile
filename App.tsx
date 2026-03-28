@@ -18,6 +18,14 @@ import { useEffect } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
+export type RootStackParamList = {
+  Splash: undefined;
+  Login: undefined;
+  EsqueciSenha: undefined;
+  Cadastro: undefined;
+  Home: undefined;
+}
+
 export default function App() {
   const [load, erro] = useFonts({
     Inter_400Regular,
@@ -32,19 +40,16 @@ export default function App() {
     return null;
   }
 
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList, "Stack">();
   return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator id="Stack" initialRouteName="Splash">
           <Stack.Screen name="Splash" component={Splash} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="EsqueciSenha" component={EsqueciSenha} options={{headerShown: false}} />
           <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}} />
-          <Stack.Screen name="CadastroEndereco" component={CadastroEndereco} options={{headerShown: false}} />
-          <Stack.Screen name="TipoArte" component={TipoArte} options={{headerShown: false, gestureEnabled: false}} />
           <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-          <Stack.Screen name="SeuPerfil" component={SeuPerfil} options={{headerShown: false}} />
-          <Stack.Screen name="EditarPerfil" component={EditarPerfil} options={{headerShown: false}} />
+
         </Stack.Navigator>
       </NavigationContainer>
   );
